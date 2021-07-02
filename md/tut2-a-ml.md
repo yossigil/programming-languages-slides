@@ -1,0 +1,269 @@
+# OCaml
+
+## declarations
+
+---
+
+### example - circle area
+
+`$$area = \pi \cdot r^2$$`
+
+```ocaml
+let pi = 3.14159;;
+(*val pi: float = 3.14159*)
+
+let area r = pi *. r *. r;;
+(*val area : float -> float = <fun>*)
+
+area 2.0;;
+(*- : float = 12.56636*)
+```
+
+---vert---
+
+### identifiers in OCaml
+
+* `let` declaration binds a name to a __value__
+* a name can not be used to change its value
+  * actually a constant
+* a name can be reused for another purpose
+
+    ```ocaml
+    let pi = "pi";;
+    (*val pi : string = "pi"*)
+    ```
+
+---vert---
+
+* if a name is declared again the new meaning is adopted afterwards
+
+    ```ocaml
+    pi;;
+    (*- : string = "pi"*)
+    ```
+
+* but does not affect existing uses of the name
+
+    ```ocaml
+    area 1.0;;
+    (*- : float = 3.14159*)
+    ```
+
+---vert---
+
+### is permanence of names a good feature?
+
+<div style="text-align: left">
+👍 redefining cannot damage your program
+
+👎 redefining may have no visible effect
+
+⚠️ when modifying a program, be sure to recompile the entire file
+</div>
+
+---
+
+### pattern matching
+
+* patterns can be used to simplify function definition
+
+    ```ocaml
+    let rec factorial = function
+      | 0 -> 1
+      | n -> n * factorial (n - 1);;
+    ```
+
+* note the usage of `function` instead of `fun`
+
+* when the function is called, the first pattern to match the actual parameter determines which expression on the right hand side will be evaluated
+
+---vert---
+
+* patterns can consist of
+  * constants - int, real, string, ...
+  * constructs - tuples, constructors
+  * variables - all the rest
+  * underscore - a wildcard
+* matching is recursive
+* any variable in the pattern is bound to the corresponding value
+* there is no binding where the wildcard is used
+
+---vert---
+
+```ocaml
+let foo = function
+  | (x, 1) -> x
+  | (1, _) -> 0
+  | _ -> -1;;
+(*val foo : int * int -> int = <fun>*)
+foo(3,1);;
+(*- : int = 3*)
+foo(1,3);;
+(*- : int = 0*)
+foo(2,2);;
+(*- : int = -1*)
+foo(1,1);;
+(*- : int = 1*)
+```
+
+---vert---
+
+### patterns using `match`
+
+```ocaml
+match E with | P1 -> E1 | ... | Pn -> En
+```
+
+```ocaml
+match p - q with
+  | 0 -> "zero"
+  | 1 -> "one"
+  | 2 -> "two"
+  | n -> if n < 10 then "lots" else "lots &lots";;
+```
+
+* if `P1` is the first to match then the result is `E1`
+* equivalent to an expression that defines a function by cases and applies it to `E`
+* no symbol terminates the case expression
+  * enclose in parentheses to eliminate ambiguity
+  * or enclose in `begin ... end`
+
+---vert---
+
+match guards using `when`:
+
+```ocaml
+match p - q with
+  | 0 -> "zero"
+  | 1 -> "one"
+  | 2 -> "two"
+  | n when n < 10 -> "lots"
+  | _ -> "lots &lots";;
+```
+
+---
+
+### type abbreviation
+
+* you can give a new name to an existing type
+
+* the new name is only an alias
+
+```ocaml
+type vec = float * float;;
+(*type vec = float * float*)
+
+let (++) (x1, y1) (x2, y2) : vec = (x1 +. x2, y1 +. y2);;
+(*val ( ++ ) : float * float -> float * float -> vec = <fun>*)
+
+(3.6, 0.9) ++ (0.1, 0.2) ++ (20.0, 30.0);;
+(*- : vec = (23.7, 31.1)*)
+```
+
+---
+
+### declarations inside an expression
+
+```ocaml
+let D in E
+```
+
+```ocaml
+let fraction n d =
+    (n / (gcd n d), d / (gcd n d));;
+(*val fraction : int -> int -> int * int = <fun>*)
+
+let fraction n d =
+    let com = gcd n d in
+    (n / com, d / com);;
+(*val fraction : int -> int -> int * int = <fun>*)
+```
+
+---vert---
+
+`let` can be simulated using anonymous functions
+
+```ocaml
+let fraction n d =
+    (fun com -> (n / com, d / com)) (gcd n d);;
+```
+
+---vert---
+
+### FIXME nested scopes
+
+```ocaml
+fun sqroot a =
+  let
+    val acc=1.0e~10
+    fun findroot x =
+      let
+        val nextx = (a/x + x)/2.0
+      in
+        if abs (x - nextx) < acc*x
+        then nextx
+        else findroot nextx
+      end
+  in 
+    findroot 1.0
+  end;
+(*val sqroot = fn: real -> real*)
+```
+
+---
+
+### simultaneous declarations (collateral)
+
+```ocaml
+let ID1 = E1 and ... and IDn = En
+```
+
+* evaluates `E1`, ..., `En`
+* and only then declares the identifiers `ID1`, ..., `IDn`
+
+```ocaml
+let x = 3;;
+let y = 5;;
+let x = y and y = x;;
+(*val x : int = 5
+  val y : int = 3*)
+```
+
+---vert---
+
+### mutually recursive functions
+
+`$$\frac{\pi}{4}=\sum_{k=0}^\infty \frac{1}{4k+1} - \frac{1}{4k+3} = 1 - \frac{1}{3} + \frac{1}{5} - \frac{1}{7} + \frac{1}{9}$$`
+
+```ocaml
+let rec pos d = neg (d -. 2.0) +. 1.0 /. d
+and neg d = if d > 0.0
+    then pos(d -. 2.0) -. 1.0 /. d
+    else 0.0;;
+
+let rec sum d one = if d > 0.0
+    then sum (d -. 2.0) (-. one) +. one /. d
+    else 0.0;;
+```
+
+---vert---
+
+### FIXME emulating `goto` statements
+
+```pascal
+var x:=0; y:=0; z:=0;
+F: x := x+1; goto G
+G: if y<z then goto F else (y:=x+y; goto H)
+H: if z>0 then (z:=z-x; goto F) else stop
+```
+
+```ocaml
+fun F(x,y,z) = G(x+1,y,z)
+and G(x,y,z) = if y < z then F(x,y,z) else H(x,x+y,z)
+and H(x,y,z) = if z > 0 then F(x,y,z-x) else (x,y,z);
+(*val F = fn : int * int * int -> int * int * int
+  val G = fn : int * int * int -> int * int * int
+  val H = fn : int * int * int -> int * int * int*)
+F(0,0,0);
+(*val it = (1,1,0) : int * int * int*)
+```
