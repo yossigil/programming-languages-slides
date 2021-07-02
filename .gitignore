@@ -7,7 +7,13 @@ out/
 .svn
 log/*.log
 tmp/**
-node_modules/
+node_modules
 .sass-cache
 dist/*.map
 .ipynb_checkpoints
+css
+dist
+plugin
+js
+gulpfile.js
+package.json
