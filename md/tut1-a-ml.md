@@ -4,9 +4,9 @@
 
 ---
 
-### loading and Saving
+### basic usage
 
-* interpreter
+* interpreter - `utop` or `ocaml`
 * prompt (#)
 * double-semicolon terminated
 
@@ -17,6 +17,8 @@
 ```
 
 ---vert---
+
+### load from file
 
 * create a file named `myfile.ml`
 * start OCaml and
@@ -31,27 +33,25 @@
     ocaml myfile.ml
     ```
 
----
+---vert---
 
-### a simple tutorial
+### REPL
 
-* OCaml can be used through an interpreter (a compiler is also available)
-* expressions followed by two semicolons yield a response
+* OCaml can be used through an interpreter
+* expressions followed by **two semicolons** yield a response
 
     ```ocaml
     2 + 2;;
     (*- : int = 4*)
     ```
 
-* doing simple arithmetic
+* the response is the computed value and its type
 
-    ```ocaml
-    3.2 -. 2.3;;
-    (*- : float = 0.9*)
+---vert---
 
-    sqrt 2.0;;
-    (*- : float = 1.41421356237309515*)
-    ```
+OCaml can also be compiled
+
+(more on that in the hw assignments)
 
 ---
 
@@ -197,43 +197,51 @@ foo (-1) (-2) (*OK*)
 
 ### int
 
-* constants
-  * sequence of digits
-    * 0
-    * 01234
-  * `-` for a unary minus sign
-    * `-23`
-    * `-85601435654638`
-* infix operations: `+` `-` `*` `/` `mod`
+* sequence of digits
+  * 0
+  * 01234
+* `-` for unary minus sign
+  * `-23`
+  * `-85601435654638`
+* infix operators: `+` `-` `*` `/` `mod`
 
 ---vert---
 
-* conventional precedence (parenthesis can be dropped without change of meaning)
+conventional precedence (parenthesis can be dropped without change of meaning)
 
-    ```ocaml
-    (((m * n) * l) - (m / j)) + j
-    ```
+```ocaml
+(((m * n) * l) - (m / j)) + j
+```
 
 ---
 
 ### float
 
-* constants
-  * decimal point
-    * `2.718281828`
-    * `1.` is the same as `1.0`
-  * e notation
-    * `7e-5`
-    * `-1.2e12`
-    * `-123.4e-2` is the same as `-1.234`
+* decimal point
+  * `2.718281828`
+  * `1.` is the same as `1.0`
+* e notation
+  * `7e-5`
+  * `-1.2e12`
+  * `-123.4e-2` is the same as `-1.234`
 * infix operators: `+.` `-.` `*.` `/.` (all end with a dot)
+* `-.` for unary minus (`-` is allowed for literals)
 
 ---vert---
 
-* functions
-  * `int_of_float` converts `float` to `int`
-  * `float_of_int` converts `int` to `float`
-  * `sqrt`, `sin`, `cos`, `tan`, `exp`, `log` all of type `float->float`
+### float functions
+
+```ocaml
+(*converts float to int*)
+int_of_float 2.5;;
+(*- : int = 2*)
+
+(*converts int to float*)
+float_of_int 5;;
+(*- : float = 5.*)
+```
+
+and many more: `sqrt`, `sin`, `cos`, `tan`, `exp`, `log` (all of type `float->float`)
 
 ---
 
@@ -348,15 +356,26 @@ has only one value
 
 ### tuples - cartesian product type
 
-* the n-tuple whose components are `x1`, ..., `xn`:
+the n-tuple whose components are `x1`, ..., `xn`:
 
-    ```ocaml
-    (x1, x2, ..., xn)
-    ```
+```ocaml
+(x1, x2, ..., xn)
+```
 
-* the parentheses are optional
+(the parentheses are optional)
 
-* the components can be of any type, including tuples
+---vert---
+
+the tuple type is written using `*`
+
+```ocaml
+(1, 2, 3);;
+(*- : int * int * int = (1, 2, 3)*)
+```
+
+---vert---
+
+the components can be of any type, including tuples
 
 ```ocaml
 let a = (1.5, 6.8);;
@@ -373,53 +392,72 @@ let a = (1.5, 6.8);;
 
 ### records
 
-* records have components (fields) identified by name
+records have fields identified by name
 
-    ```ocaml
-    type person = {name: string; age: int};;
-    let me = {name="Ofir"; age=30};;
-    (*val me : person = {name = "Ofir"; age = 30}*)
-    ```
+```ocaml
+type person = {name: string; age: int};;
+(*type person = { name : string; age : int; }*)
 
-* selecting a field
+let me = {name="Ofir"; age=30};;
+(*val me : person = {name = "Ofir"; age = 30}*)
+```
 
-    ```ocaml
-    me.name;;
-    (*- : string = "Ofir"*)
-    ```
+---vert---
+
+selecting a field using `.`
+
+```ocaml
+me.name;;
+(*- : string = "Ofir"*)
+```
+
+---vert---
+
+a record is identified by its fields
+
+```ocaml
+```
 
 ---
 
 ### lists
 
-* a list is a finite sequence of elements
+a list is a finite homogenous sequence of elements
 
-    ```ocaml
-    [3; 5; 9];;
-    (*- : int list = [3; 5; 9]*)
-    ["a"; "list"];;
-    (*- : string list = ["a"; "list"]*)
-    [];;
-    (*- : 'a list = []*)
-    ```
-
-* note that elements are separated by a `;` and not by a `,`
-
-    ```ocaml
-    [3, 4, 3];;
-    (*- : (int * int * int) list = [(3, 4, 3)]*)
-    ```
+```ocaml
+[3; 5; 9];;
+(*- : int list = [3; 5; 9]*)
+["a"; "list"];;
+(*- : string list = ["a"; "list"]*)
+[];;
+(*- : 'a list = []*)
+```
 
 ---vert---
 
-* elements may have any type but all elements must have the same type
+note that elements are separated by a `;` and not by a `,`
 
-    ```ocaml
-    [(1, "one"); (2, "two")];;
-    (*- : (int * string) list = [(1, "one"); (2, "two")]*)
-    [[3.1;]; []; [1.0; -0.5]];;
-    (*- : float list list = [[3.1]; []; [1.; -0.5]]*)
-    ```
+```ocaml
+[3, 4, 3];;
+(*- : (int * int * int) list = [(3, 4, 3)]*)
+
+[1, 2 ; 3, 4];;
+(*- : (int * int) list = [(1, 2); (3, 4)]*)
+```
+
+---vert---
+
+elements may have any type but all elements must have the same type
+
+```ocaml
+[(1, "one"); (2, "two")];;
+(*- : (int * string) list = [(1, "one"); (2, "two")]*)
+
+[[3.1;]; []; [1.0; -0.5]];;
+(*- : float list list = [[3.1]; []; [1.; -0.5]]*)
+
+[1; "abc"];; (*Error!*)
+```
 
 ---
 
@@ -593,19 +631,18 @@ lengthvec (5.0, 12.0);;
 
 ### type inference
 
-* OCaml deduces the types in expressions
-* type checking the function:
+OCaml deduces the types in expressions
 
-    ```ocaml
-    let rec facti (n, p) =
-        if n = 0 then p else facti (n - 1, n * p);;
-    (*val facti : int * int -> int = <fun>*)
-    ```
+```ocaml
+let rec facti (n, p) =
+    if n = 0 then p else facti (n - 1, n * p);;
+(*val facti : int * int -> int = <fun>*)
+```
 
-  * <span class="fragment" data-fragment-index="1">the constant `0` has type `int`.</span>
-  * <span class="fragment" data-fragment-index="2">therefore `n=0` involve integers so `n` has type `int`</span>
-  * <span class="fragment" data-fragment-index="3">`n * p` is integer multiplication, so `p` has type `int`</span>
-  * <span class="fragment" data-fragment-index="4">`facti` returns type `int`</span>
+* the constant `0` has type `int`
+* therefore `n=0` involve integers so `n` has type `int`
+* `n * p` is integer multiplication, so `p` has type `int`
+* `facti` returns type `int`
 
 ---
 
@@ -618,7 +655,7 @@ lengthvec (5.0, 12.0);;
 |                           |        | flexibility | security |
 |:-------------------------:|:------:|:-----------:|:--------:|
 |        weakly typed       |  lisp  |      ✔      |          |
-|       strongly typed      | Pascal |             |     ✔    |
+|       strongly typed      |  Java  |             |     ✔    |
 | polymorphic type checking | OCaml  |      ✔      |     ✔    |
 
 and in OCaml most types are deduced automatically 😎
@@ -628,8 +665,8 @@ and in OCaml most types are deduced automatically 😎
 ### polymorphic function definitions
 
 * an object is polymorphic if it can be regarded as having any kind of type
-* if type inference leaves some types completely unconstrained then the definition is polymorphic
-* a polymorphic type contains a type variable, e.g. 'a, 'b
+* if type inference doesn't constrain a type then it's polymorphic
+* a polymorphic type contains a type variable (e.g. `'a`)
 
 ```ocaml
 let pairself x = (x, x);;
@@ -661,28 +698,26 @@ let pair (x,y) = (y,x);;
 
 ---vert---
 
-### GCD - Pascal vs. OCaml
+### GCD - C vs. OCaml
 
-* an imperative Pascal program:
+an imperative C program:
 
-    ```pascal
-    function gcd(m,n: integer): integer;
-    var prevm: integer;
-    begin
-        while m<>0 do begin
-            prevm := m;
-            m := n mod m;
-            n := prevm
-        end;
-        gcd := n
-    end;
-    ```
+```c
+int gcd(int m, int n) {
+    while (m != 0) {
+        int tmp = m;
+        m = n % m;
+        n = tmp;
+    }
+    return n;
+}
+```
 
-* a functional program in OCaml:
+a functional program in OCaml:
 
-    ```ocaml
-    let rec gcd m n =
-        if m = 0 then n else gcd (n mod m) m;;
-    ```
+```ocaml
+let rec gcd m n =
+    if m = 0 then n else gcd (n mod m) m;;
+```
 
-* which one is more efficient? 🧐
+which one is more efficient? 🧐

@@ -6,26 +6,22 @@
 
 ### side note - operators
 
-* a function of two arguments can be treated as an infix operator
+a function of two arguments can be treated as an infix operator
 
-    ```ocaml
-    let (--) x y = sqrt(x *. x +. y *. y);;
-    (*val ( -- ) : float -> float -> float = <fun>*)
-    ```
+```ocaml
+let (--) x y = sqrt(x *. x +. y *. y);;
+(*val ( -- ) : float -> float -> float = <fun>*)
 
-* convert to an infix operator
+3.0 -- 4.0;;
+(*- : float = 5.*)
 
-    ```ocaml
-    3.0 -- 4.0;;
-    (*- : float = 5.*)
-
-    1.0 -- 3.0 -- 2.0 -- 5.0;;
-    (*- : float = 6.24499799839839831*)
-    ```
+1.0 -- 3.0 -- 2.0 -- 5.0;;
+(*- : float = 6.24499799839839831*)
+```
 
 ---vert---
 
-* the operator can be used as a regular function
+the operator can be used as a regular function
 
 ```ocaml
 (--);;
@@ -35,33 +31,44 @@
 (*- : float = 3.16227766016837952*)
 ```
 
+---vert---
+
+precedence and associativity are predefined and determined by the characters used in the operator
+
+![ocaml operators](../imgs/ocaml-operators.png)
+
 ---
 
 ### currying
 
-* any function of two arguments is actually a **curried** function of one argument `$\alpha\rightarrow (\beta \rightarrow \gamma)$`
-* example
-
-    ```ocaml
-    let prefix pre post = pre ^ post;;
-    (*val prefix : string -> string -> string = <fun>*)
-    ```
-
-* is equivalent to:
-
-    ```ocaml
-    let prefix pre = fun post -> pre ^ post;;
-    (*val prefix : string -> string -> string = <fun>*)
-    ```
+any function of two arguments is actually a **curried** function of one argument `$$\alpha\rightarrow (\beta \rightarrow \gamma)$$`
 
 ---vert---
 
-reminder: `->` is right associative
+```ocaml
+let prefix pre post = pre ^ post;;
+(*val prefix : string -> string -> string = <fun>*)
+```
+
+is equivalent to:
 
 ```ocaml
-val prefix : string -> string -> string = <fun>
+let prefix pre = fun post -> pre ^ post;;
+(*val prefix : string -> string -> string = <fun>*)
+```
 
-val prefix : string -> (string -> string) = <fun>
+---vert---
+
+reminder: `->` is right associative, so
+
+```ocaml
+val prefix : string -> string -> string
+```
+
+is equivalent to
+
+```ocaml
+val prefix : string -> (string -> string)
 ```
 
 ---
@@ -82,19 +89,16 @@ doctorify "Tomer";;
 
 ### function calls
 
-* function call
+* a function call `F E1 E2 ... En`
+* abbreviates `(...((F E1) E2)...) En`
 
-    ```ocaml
-    (prefix "Dr. ") "Tomer";;
-    (*- : string = "Dr. Tomer"*)
+```ocaml
+(prefix "Dr. ") "Tomer";;
+(*- : string = "Dr. Tomer"*)
 
-    prefix "Dr. " "Tomer";;
-    (*- : string = "Dr. Tomer"*)
-    ```
-
-* the rule is:
-  * a function call `F E1 E2 ... En`
-  * abbreviates `(...((F E1) E2)...) En`
+prefix "Dr. " "Tomer";;
+(*- : string = "Dr. Tomer"*)
+```
 
 ---
 
