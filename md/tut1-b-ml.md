@@ -1,6 +1,6 @@
 # OCaml
 
-## currying
+## functions
 
 ---
 

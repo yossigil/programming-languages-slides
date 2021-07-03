@@ -95,17 +95,17 @@ sudo snap install --classic code
 
 ---vert---
 
-### running vscode in windows
+### running vscode on windows
 
-* go to `C:\OCaml64\home\NAME` where `NAME` is your cygwin username
+* go to `'C:\OCaml64\home\NAME'` where `NAME` is your cygwin username
 * create a file named `.bashrc` with the following contents
 
-    ```bash
-    alias vscode="/cygdrive/c/Users/USERNAME/AppData/Local/Programs/Microsoft\ VS\ Code/Code.exe &> /dev/null &"
-    eval $(opam env)
-    ```
+```bash
+alias vscode="/cygdrive/c/Users/USERNAME/AppData/Local/Programs/Microsoft\ VS\ Code/Code.exe &> /dev/null &"
+eval $(opam env)
+```
 
-* `USERNAME` should be replaced by your windows username with spaces escaped (that is `John Doe` -> `John\ Doe`)
+* `USERNAME` should be replaced by your windows username with spaces escaped (e.g. `'John Doe'` → `'John\ Doe'`)
 
 ---vert---
 

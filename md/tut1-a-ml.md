@@ -533,7 +533,7 @@ lengthvec (5.0, 12.0);;
 
 * without `rec` we'll get an error:
 
-    ```
+    ```text
             else n * (factorial (n - 1));;
                       ^^^^^^^^^
     Error: Unbound value factorial
