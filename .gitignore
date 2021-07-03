@@ -17,3 +17,4 @@ plugin
 js
 gulpfile.js
 package.json
+md-to-html.sh

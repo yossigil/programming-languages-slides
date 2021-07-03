@@ -37,7 +37,7 @@ in the same terminal run:
 utop
 ```
 
-and you can start running code!
+and you can start running code! 🎉
 
 ![utop](../imgs/utop-repl.png)
 
