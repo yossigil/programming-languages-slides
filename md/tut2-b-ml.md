@@ -236,61 +236,57 @@ let int_char_list = [Type1 5; Type2 'a'];;
 
 ---
 
-### FIXME trees
+### trees
 
 ```ocaml
-datatype 'a tree =
-    Nil
-  | Br of 'a * ('a tree) * ('a tree);
+type 'a tree = Nil | Br of 'a * ('a tree) * ('a tree);;
 
-fun Leaf x = Br (x, Nil, Nil);
+let leaf x = Br (x, Nil, Nil);;
+let tree2 = Br(2, leaf 1, leaf 3);;
+let tree5 = Br(5, leaf 6, leaf 7);;
+let tree4 = Br(4, tree2, tree5);;
+(*val tree4 : int tree =
+  Br (4, Br (2, Br (1, Nil, Nil), Br (3, Nil, Nil)),
+   Br (5, Br (6, Nil, Nil), Br (7, Nil, Nil)))*)
 
-val tree2 = Br (2, Leaf 1, Leaf 3);
-val tree5 = Br (5, Leaf 6, Leaf 7);
-val tree4 = Br (4, tree2, tree5);
-(*val tree4 = Br (4,Br (2,Br #,Br #),Br (5,Br #,Br #)) : int tree*)
-
-fun size Nil = 0
-  | size (Br (v,t1,t2)) = 1 + size t1 + size t2;
-(*val size = fn : 'a tree -> int*)
+let rec size = function
+  | Nil -> 0
+  | Br(_, l, r) -> 1 + size l + size r;;
+(*val size : 'a tree -> int = <fun>*)
 ```
 
 ---
 
-### FIXME binary search trees
+### binary search trees
 
 * implement an associative array using trees
-* the keys are `int`s
-* values may be anything
-* assumption: the tree is sorted
+* the keys and values may be anything
+* assumption: the tree is ordered
 
 ---vert---
 
 ```ocaml
-val cmp = Int.compare;
+exception NotFound;;
 
-fun get (Br ((node_k, v), left, right)) k = 
-  case cmp (node_k, k) of
-    EQUAL   => v
-  | GREATER => get right k
-  | LESS    => get left k
-;
-(*stdIn:22.28-22.164 Warning: match nonexhaustive ...*)
-(*val get = fn : (int * 'a) tree -> int -> 'a*)
+let rec get tr k = match tr with
+  | Nil -> raise NotFound
+  | Br((nk, nv), left, right) -> match compare nk k with
+    | 0 -> nv
+    | n when n < 0 -> get left k
+    | _ -> get right k;;
+(*val get : ('a * 'b) tree -> 'a -> 'b = <fun>*)
 ```
 
 ---vert---
 
 ```ocaml
-local
-   fun compare (k1,_) (k2,_) = cmp (k1, k2)
-in
-    fun insert Nil item = Br (item, Nil, Nil)
-      | insert (Br (node, left, right)) item = 
-        case compare node item of 
-          EQUAL   => Br (item, left, right)
-        | GREATER => Br (node, left, insert right item)
-        | LESS    => Br (node, insert left item, right)
-end;
-(*val insert = fn : (int * 'a) tree -> int * 'a -> (int * 'a) tree*)
+let rec insert tr (k, v) = match tr with
+  | Nil -> leaf (k, v)
+  | Br ((nk, nv), left, right) -> match compare nk k with
+    | 0 -> Br ((k, v), left, right)
+    | n when n < 0 ->
+        Br ((nk, nv), insert left (k, v), right)
+    | _ ->
+        Br ((nk, nv), left, insert right (k, v));;
+(*val insert : ('a * 'b) tree -> 'a * 'b -> ('a * 'b) tree = <fun>*)
 ```
