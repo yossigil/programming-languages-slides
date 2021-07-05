@@ -201,7 +201,7 @@ type 'a list =
 
 ```ocaml
 (*predefined*)
-type 'a option = None | Some of 'a;
+type 'a option = None | Some of 'a;;
 
 let hd' = function
   | [] -> None
@@ -248,14 +248,22 @@ let tree4 = Br(4, tree2, tree5);;
 (*val tree4 : int tree =
   Br (4, Br (2, Br (1, Nil, Nil), Br (3, Nil, Nil)),
    Br (5, Br (6, Nil, Nil), Br (7, Nil, Nil)))*)
+```
 
+---vert---
+
+<!-- .slide: data-background-iframe="http://localhost:16789/notebooks/tut2-b-binary-search-trees.ipynb" data-background-interactive -->
+
+---vert---
+
+```ocaml
 let rec size = function
   | Nil -> 0
   | Br(_, l, r) -> 1 + size l + size r;;
 (*val size : 'a tree -> int = <fun>*)
 ```
 
----
+---vert---
 
 ### binary search trees
 
@@ -266,15 +274,13 @@ let rec size = function
 ---vert---
 
 ```ocaml
-exception NotFound;;
-
 let rec get tr k = match tr with
-  | Nil -> raise NotFound
+  | Nil -> None
   | Br((nk, nv), left, right) -> match compare nk k with
-    | 0 -> nv
+    | 0 -> Some nv
     | n when n < 0 -> get left k
     | _ -> get right k;;
-(*val get : ('a * 'b) tree -> 'a -> 'b = <fun>*)
+(*val get : ('a * 'b) tree -> 'a -> 'b option = <fun>*)
 ```
 
 ---vert---
