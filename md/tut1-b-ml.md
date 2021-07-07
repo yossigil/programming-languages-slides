@@ -145,6 +145,32 @@ g '1';;
 
 ### exam questions
 
+#### what will be printed?
+
 ---vert---
 
-<!-- .slide: data-background-iframe="http://localhost:16789/notebooks/tut1-b-exam-questions.ipynb" data-background-interactive -->
+```ocaml
+let rec f1 a b = f1 a b;;
+```
+<!-- .element: data-thebe-executable -->
+
+---vert---
+
+```ocaml
+let rec f2 g x = g (f2 g) x;;
+```
+<!-- .element: data-thebe-executable -->
+
+---vert---
+
+```ocaml
+let f3 x y z = (x, x y, y z);;
+```
+<!-- .element: data-thebe-executable -->
+
+---vert---
+
+```ocaml
+let rec f4 f = f f4;;
+```
+<!-- .element: data-thebe-executable -->
