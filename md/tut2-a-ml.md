@@ -4,6 +4,15 @@
 
 ---
 
+### naming entities
+
+entities of different kinds are distinguished by the capitalization of their names:
+
+* uppercase: constructors, variant tags, exceptions, modules
+* lowercase: (anything else) values, labels, type constructors, record fields, classes, instances variables, methods
+
+---
+
 ### example - circle area
 
 `$$area = \pi \cdot r^2$$`
@@ -190,24 +199,18 @@ let fraction n d =
 
 ---vert---
 
-### FIXME nested scopes
+### nested scopes
 
 ```ocaml
-fun sqroot a =
-  let
-    val acc=1.0e~10
-    fun findroot x =
-      let
-        val nextx = (a/x + x)/2.0
-      in
-        if abs (x - nextx) < acc*x
-        then nextx
-        else findroot nextx
-      end
-  in 
-    findroot 1.0
-  end;
-(*val sqroot = fn: real -> real*)
+let sq_root a =
+  let acc = 1.0e-10 in
+  let rec find_root x =
+    let next_x = (a /. x +. x) /. 2.0 in
+    if Float.abs (x -. next_x) < acc *. x
+    then next_x
+    else find_root next_x in
+  find_root 1.0;;
+(*val sq_root : float -> float = <fun>*)
 ```
 
 ---
@@ -258,12 +261,13 @@ H: if z>0 then (z:=z-x; goto F) else stop
 ```
 
 ```ocaml
-fun F(x,y,z) = G(x+1,y,z)
-and G(x,y,z) = if y < z then F(x,y,z) else H(x,x+y,z)
-and H(x,y,z) = if z > 0 then F(x,y,z-x) else (x,y,z);
-(*val F = fn : int * int * int -> int * int * int
-  val G = fn : int * int * int -> int * int * int
-  val H = fn : int * int * int -> int * int * int*)
-F(0,0,0);
-(*val it = (1,1,0) : int * int * int*)
+let rec f x y z = g (x + 1) y z
+and g x y z = if y < z then f x y z else h x (x + y) z
+and h x y z = if z > 0 then f x y (z - x) else (x, y, z);;
+(*val f : int -> int -> int -> int * int * int = <fun>
+  val g : int -> int -> int -> int * int * int = <fun>
+  val h : int -> int -> int -> int * int * int = <fun>*)
+
+f 0 0 0;;
+(*- : int * int * int = (1, 1, 0)*)
 ```
