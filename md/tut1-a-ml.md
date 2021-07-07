@@ -408,6 +408,7 @@ selecting a field using `.`
 me.name;;
 (*- : string = "Ofir"*)
 ```
+<!-- .element: data-thebe-executable -->
 
 ---vert---
 
