@@ -245,14 +245,24 @@ let leaf x = Br (x, Nil, Nil);;
 let tree2 = Br(2, leaf 1, leaf 3);;
 let tree5 = Br(5, leaf 6, leaf 7);;
 let tree4 = Br(4, tree2, tree5);;
-(*val tree4 : int tree =
-  Br (4, Br (2, Br (1, Nil, Nil), Br (3, Nil, Nil)),
-   Br (5, Br (6, Nil, Nil), Br (7, Nil, Nil)))*)
 ```
+<!-- .element: data-thebe-executable -->
 
 ---vert---
 
-<!-- .slide: data-background-iframe="http://localhost:16789/notebooks/tut2-b-binary-search-trees.ipynb" data-background-interactive -->
+#### implement `size`
+
+```ocaml
+(*val size : 'a tree -> int*)
+```
+<!-- .element: data-thebe-executable -->
+
+test:
+
+```ocaml
+size tree4;;
+```
+<!-- .element: data-thebe-executable -->
 
 ---vert---
 
@@ -260,8 +270,8 @@ let tree4 = Br(4, tree2, tree5);;
 let rec size = function
   | Nil -> 0
   | Br(_, l, r) -> 1 + size l + size r;;
-(*val size : 'a tree -> int = <fun>*)
 ```
+<!-- .element: data-thebe-executable -->
 
 ---vert---
 
@@ -273,6 +283,25 @@ let rec size = function
 
 ---vert---
 
+#### implement `get`
+
+`get` takes a tree and a key and if the key is present returns an `option` of the associated value otherwise it returns `None`
+
+reminder:
+
+```ocaml
+type 'a option = None | Some of 'a;;
+```
+
+---vert---
+
+```ocaml
+(*val get : ('a * 'b) tree -> 'a -> 'b option*)
+```
+<!-- .element: data-thebe-executable -->
+
+---vert---
+
 ```ocaml
 let rec get tr k = match tr with
   | Nil -> None
@@ -280,8 +309,17 @@ let rec get tr k = match tr with
     | 0 -> Some nv
     | n when n < 0 -> get left k
     | _ -> get right k;;
-(*val get : ('a * 'b) tree -> 'a -> 'b option = <fun>*)
 ```
+<!-- .element: data-thebe-executable -->
+
+---vert---
+
+#### implement `insert`
+
+```ocaml
+(*val insert : ('a * 'b) tree -> 'a * 'b -> ('a * 'b) tree = <fun>*)
+```
+<!-- .element: data-thebe-executable -->
 
 ---vert---
 
@@ -294,5 +332,5 @@ let rec insert tr (k, v) = match tr with
         Br ((nk, nv), insert left (k, v), right)
     | _ ->
         Br ((nk, nv), left, insert right (k, v));;
-(*val insert : ('a * 'b) tree -> 'a * 'b -> ('a * 'b) tree = <fun>*)
 ```
+<!-- .element: data-thebe-executable -->
