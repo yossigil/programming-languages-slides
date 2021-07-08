@@ -4,7 +4,7 @@
 
 - [ ] write an OCaml tutorial about:
   - [ ] functors
-  - [ ] lazy expressions
+  - [X] lazy expressions
   - [ ] imperative features
   - [ ] references, mutable data structures
   - [ ] objects and classes (?)
