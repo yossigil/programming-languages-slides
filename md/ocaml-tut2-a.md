@@ -138,7 +138,7 @@ match E with | P1 -> E1 | ... | Pn -> En
 ---vert---
 
 ```ocaml
-match 123 - 21 with
+match Random.int 10 with
   | 0 -> "zero"
   | 1 -> "one"
   | 2 -> "two"
@@ -151,7 +151,7 @@ match 123 - 21 with
 match guards using `when`:
 
 ```ocaml
-match 123 - 21 with
+match Random.int 10 with
   | 0 -> "zero"
   | 1 -> "one"
   | 2 -> "two"
