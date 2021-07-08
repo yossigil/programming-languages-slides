@@ -122,6 +122,49 @@ module Foo: BAR
 
 ---
 
+### local `open`
+
+```ocaml
+let word, idx = "OCaml", 2;;
+
+String.sub word idx ((String.length word) - idx);;
+```
+<!-- .element: data-thebe-executable -->
+
+can be rewritten as:
+
+```ocaml
+let open String in
+sub word idx ((length word) - idx);;
+```
+<!-- .element: data-thebe-executable -->
+
+---vert---
+
+and there's a more concise syntax
+
+```ocaml
+String.(sub word idx ((length word) - idx));;
+```
+<!-- .element: data-thebe-executable -->
+
+---vert---
+
+the general syntax is:
+
+```ocaml
+let open Module in
+expr;;
+```
+
+or
+
+```ocaml
+Module.(expr);;
+```
+
+---
+
 ### TODO
 
 * nesting modules
