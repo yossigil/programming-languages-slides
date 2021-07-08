@@ -133,7 +133,42 @@ let tl = function
 
 ---vert---
 
-<!-- .slide: data-background-iframe="http://localhost:16789/notebooks/tut4-hd-tl-examples.ipynb" data-background-interactive -->
+```ocaml
+let it = List.hd [ [ [1;2]; [3] ]; [ [4] ] ];;
+```
+<!-- .element: data-thebe-executable -->
+
+```ocaml
+let it = List.hd it;;
+```
+<!-- .element: data-thebe-executable -->
+
+```ocaml
+let it = List.hd it;;
+```
+<!-- .element: data-thebe-executable -->
+
+---vert---
+
+```ocaml
+let it = List.tl ["how"; "are"; "you"];;
+```
+<!-- .element: data-thebe-executable -->
+
+```ocaml
+let it = List.tl it;;
+```
+<!-- .element: data-thebe-executable -->
+
+```ocaml
+let it = List.tl it;;
+```
+<!-- .element: data-thebe-executable -->
+
+```ocaml
+let it = List.tl it;;
+```
+<!-- .element: data-thebe-executable -->
 
 ---
 
@@ -548,7 +583,71 @@ equality is polymorphic
 
 ---vert---
 
-<!-- .slide: data-background-iframe="http://localhost:16789/notebooks/tut4-exam-questions.ipynb" data-background-interactive -->
+implement `map` using `fold_left`
+
+```ocaml
+val map: ('a -> 'b) -> 'a list -> 'b list
+val fold_left: ('a -> 'b -> 'a) -> 'a -> 'b list -> 'a
+```
+
+```ocaml
+let map f xs = List.fold_left
+    _
+    _
+    xs
+;;
+
+let () = assert (map (( * ) 2) [1; 2; 3] = [2; 4; 6]);;
+```
+<!-- .element: data-thebe-executable -->
+
+---vert---
+
+```ocaml
+let map f xs = List.fold_left
+    (fun acc x -> acc @ [f x])
+    []
+    xs
+;;
+```
+<!-- .element: data-thebe-executable -->
+
+---vert---
+
+implement `insertion_sort` using `fold_right` (you may define helper functions)
+
+```ocaml
+val insertion_sort: ('a -> 'a -> bool) -> 'a list -> 'a list
+val fold_right: ('a -> 'b -> 'b) -> 'a list -> 'b -> 'b
+```
+
+```ocaml
+let insertion_sort lt xs = List.fold_right
+    _
+    xs
+    _
+;;
+
+let () = assert (insertion_sort (<) [0;3;2;4;1] = [0;1;2;3;4]);;
+```
+<!-- .element: data-thebe-executable -->
+
+---vert---
+
+```ocaml
+let rec insert x = function
+  | [] -> [x]
+  | y::ys -> if x < y
+      then x::y::ys
+      else y::(insert x ys);;
+
+let insertion_sort lt xs = List.fold_right
+    insert
+    xs
+    []
+;;
+```
+<!-- .element: data-thebe-executable -->
 
 ---
 
@@ -556,4 +655,85 @@ equality is polymorphic
 
 ---vert---
 
-<!-- .slide: data-background-iframe="http://localhost:16789/notebooks/tut4-extra-questions.ipynb" data-background-interactive -->
+implement a tail recursive append
+
+```ocaml
+let (@) xs ys = match xs with
+  | [] -> ys
+  | x::xs -> x :: (xs @ ys);;
+```
+
+```ocaml
+let (@) (*...*)
+
+let () = assert ([1;2;3] @ [4;5;6] = [1;2;3;4;5;6]);;
+```
+<!-- .element: data-thebe-executable -->
+
+---vert---
+
+```ocaml
+let rec aux acc = function
+  | [] -> acc
+  | x :: xs -> aux (x::acc) xs;;
+
+let (@) xs ys = aux ys (aux [] xs);;
+```
+<!-- .element: data-thebe-executable -->
+
+---vert---
+
+implement `flatten` using `fold_right`
+
+```ocaml
+val flatten: 'a list list -> 'a list
+val fold_right: ('a -> 'b -> 'b) -> 'a list -> 'b -> 'b
+```
+
+```ocaml
+let flatten xs = List.fold_right
+    _
+    _
+    _
+;;
+
+let () = assert (flatten [[1;2;3]; [4;5;6]; []; [7;8]] = [1;2;3;4;5;6;7;8]);;
+```
+<!-- .element: data-thebe-executable -->
+
+---vert---
+
+```ocaml
+let flatten xs = List.fold_right
+    ( @ )
+    xs
+    []
+;;
+```
+<!-- .element: data-thebe-executable -->
+
+---vert---
+
+implement `flatten` using `fold_left`
+
+```ocaml
+let flatten xs = List.fold_left
+    _
+    _
+    _
+;;;
+
+let () = assert (flatten [[1;2;3]; [4;5;6]; []; [7;8]] = [1;2;3;4;5;6;7;8]);;
+```
+<!-- .element: data-thebe-executable -->
+
+---vert---
+
+```ocaml
+let flatten xs = List.fold_left
+    ( @ )
+    []
+    xs
+;;
+```
+<!-- .element: data-thebe-executable -->
