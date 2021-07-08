@@ -12,7 +12,7 @@ function buildHtml(output_dir, renderTemplate, name) {
 }
 
 //
-function generate_slides(output_dir, directory, template_name) {
+function generate_slides(output_dir, directory, template_name, prefix) {
     fs.readdir(directory, (err, files) => {
         if (err) {
             console.error("Could not list the directory.", err);
@@ -23,12 +23,12 @@ function generate_slides(output_dir, directory, template_name) {
         var renderTemplate = Handlebars.compile(template);
 
         files.forEach((file, _index) => {
-            if (file.endsWith(".md")) {
+            if (file.endsWith(".md") && file.startsWith(prefix)) {
                 buildHtml(output_dir, renderTemplate, file.substring(0, file.length - 3));
             }
         });
     });
 }
 
-generate_slides(path.join(__dirname, "./slides"), path.join(__dirname, "./md"), 'slide-template.hbs');
-generate_slides(path.join(__dirname, "./prolog-slides"), path.join(__dirname, "./prolog-md"), 'prolog-slide-template.hbs');
+generate_slides(path.join(__dirname, "./slides"), path.join(__dirname, "./md"), 'slide-template.hbs', 'tut');
+generate_slides(path.join(__dirname, "./slides"), path.join(__dirname, "./md"), 'prolog-slide-template.hbs', 'prolog-');
