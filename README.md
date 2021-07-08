@@ -2,12 +2,12 @@
 
 ## requirements
 
-* npm
-* nodejs
-* jupyter-notebook
-* ocaml
-* ocaml-merlin <https://github.com/ocaml/merlin>
-* ocaml-jupyter <https://github.com/akabe/ocaml-jupyter>
+- npm
+- nodejs
+- jupyter-notebook
+- ocaml
+- ocaml-merlin <https://github.com/ocaml/merlin>
+- ocaml-jupyter <https://github.com/akabe/ocaml-jupyter>
 
 ## install
 
@@ -16,9 +16,12 @@ git clone --recurse-submodules https://github.com/twyair/programming-languages-s
 
 npm install
 
-cd thebe
+cd reveal.js
 npm install
-npm build
+
+cd ../thebe
+npm install
+npm run build
 ```
 
 ## build
@@ -36,10 +39,10 @@ npm start
 and on a different terminal:
 
 ```bash
-npm notebook
+npm run notebook
 ```
 
-browse to <http://localhost:8000/>
+go to to <http://localhost:8000/>
 
 ## TODO
 

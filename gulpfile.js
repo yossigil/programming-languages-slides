@@ -1,6 +1,4 @@
-const pkg = require('./package.json')
 const yargs = require('yargs')
-
 const gulp = require('gulp')
 const connect = require('gulp-connect')
 
