@@ -1,5 +1,14 @@
 # programming languages slides
 
+## requirements
+
+* npm
+* nodejs
+* jupyter-notebook
+* ocaml
+* ocaml-merlin <https://github.com/ocaml/merlin>
+* ocaml-jupyter <https://github.com/akabe/ocaml-jupyter>
+
 ## install
 
 ```bash
