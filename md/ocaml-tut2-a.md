@@ -27,6 +27,7 @@ let area r = pi *. r *. r;;
 area 2.0;;
 (*- : float = 12.56636*)
 ```
+<!-- .element: data-thebe-executable -->
 
 ---vert---
 
@@ -41,6 +42,7 @@ area 2.0;;
     let pi = "pi";;
     (*val pi : string = "pi"*)
     ```
+    <!-- .element: data-thebe-executable -->
 
 ---vert---
 
@@ -50,6 +52,7 @@ area 2.0;;
     pi;;
     (*- : string = "pi"*)
     ```
+    <!-- .element: data-thebe-executable -->
 
 * but does not affect existing uses of the name
 
@@ -57,6 +60,7 @@ area 2.0;;
     area 1.0;;
     (*- : float = 3.14159*)
     ```
+    <!-- .element: data-thebe-executable -->
 
 ---vert---
 
@@ -81,6 +85,7 @@ area 2.0;;
       | 0 -> 1
       | n -> n * factorial (n - 1);;
     ```
+    <!-- .element: data-thebe-executable -->
 
 * note the usage of `function` instead of `fun`
 
@@ -114,6 +119,7 @@ foo(2,2);;
 foo(1,1);;
 (*- : int = 1*)
 ```
+<!-- .element: data-thebe-executable -->
 
 ---vert---
 
@@ -121,14 +127,6 @@ foo(1,1);;
 
 ```ocaml
 match E with | P1 -> E1 | ... | Pn -> En
-```
-
-```ocaml
-match p - q with
-  | 0 -> "zero"
-  | 1 -> "one"
-  | 2 -> "two"
-  | n -> if n < 10 then "lots" else "lots &lots";;
 ```
 
 * if `P1` is the first to match then the result is `E1`
@@ -139,16 +137,28 @@ match p - q with
 
 ---vert---
 
+```ocaml
+match 123 - 21 with
+  | 0 -> "zero"
+  | 1 -> "one"
+  | 2 -> "two"
+  | n -> if n < 10 then "lots" else "lots &lots";;
+```
+<!-- .element: data-thebe-executable -->
+
+---vert---
+
 match guards using `when`:
 
 ```ocaml
-match p - q with
+match 123 - 21 with
   | 0 -> "zero"
   | 1 -> "one"
   | 2 -> "two"
   | n when n < 10 -> "lots"
   | _ -> "lots &lots";;
 ```
+<!-- .element: data-thebe-executable -->
 
 ---
 
@@ -168,6 +178,7 @@ let (++) (x1, y1) (x2, y2) : vec = (x1 +. x2, y1 +. y2);;
 (3.6, 0.9) ++ (0.1, 0.2) ++ (20.0, 30.0);;
 (*- : vec = (23.7, 31.1)*)
 ```
+<!-- .element: data-thebe-executable -->
 
 ---
 
@@ -187,15 +198,17 @@ let fraction n d =
     (n / com, d / com);;
 (*val fraction : int -> int -> int * int = <fun>*)
 ```
+<!-- .element: data-thebe-executable -->
 
 ---vert---
 
-`let` can be simulated using anonymous functions
+`let ... in` can be simulated using anonymous functions
 
 ```ocaml
 let fraction n d =
     (fun com -> (n / com, d / com)) (gcd n d);;
 ```
+<!-- .element: data-thebe-executable -->
 
 ---vert---
 
@@ -212,6 +225,7 @@ let sq_root a =
   find_root 1.0;;
 (*val sq_root : float -> float = <fun>*)
 ```
+<!-- .element: data-thebe-executable -->
 
 ---
 
@@ -231,6 +245,7 @@ let x = y and y = x;;
 (*val x : int = 5
   val y : int = 3*)
 ```
+<!-- .element: data-thebe-executable -->
 
 ---vert---
 
@@ -248,6 +263,7 @@ let rec sum d one = if d > 0.0
     then sum (d -. 2.0) (-. one) +. one /. d
     else 0.0;;
 ```
+<!-- .element: data-thebe-executable -->
 
 ---vert---
 
@@ -271,3 +287,4 @@ and h x y z = if z > 0 then f x y (z - x) else (x, y, z);;
 f 0 0 0;;
 (*- : int * int * int = (1, 1, 0)*)
 ```
+<!-- .element: data-thebe-executable -->

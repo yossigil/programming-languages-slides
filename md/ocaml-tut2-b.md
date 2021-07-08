@@ -22,6 +22,7 @@ type single = Only;;
 Only;;
 (*- : single = Only*)
 ```
+<!-- .element: data-thebe-executable -->
 
 * `Only` denotes the only value in the type `single`
 * isomorphic to `unit`
@@ -36,6 +37,7 @@ type single = only;;
                  ^^^^
 Error: Unbound type constructor only*)
 ```
+<!-- .element: data-thebe-executable -->
 
 ---vert---
 
@@ -48,6 +50,7 @@ type bool' = True | False;;
 True;;
 (*- : bool' = True*)
 ```
+<!-- .element: data-thebe-executable -->
 
 ---vert---
 
@@ -64,8 +67,8 @@ let value = function King -> Float.infinity
 (*val value : piece -> float = <fun>*)
 
 value Bishop;;
-(*- : float = 3.*)
 ```
+<!-- .element: data-thebe-executable -->
 
 ---
 
@@ -82,6 +85,7 @@ let body, engine = 0.0122, 50.0;;
 a engine body;; (* oops *)
 (*- : float = 0.000244*)
 ```
+<!-- .element: data-thebe-executable -->
 
 ---vert---
 
@@ -96,6 +100,7 @@ let a (m:mass) (f:force) : acceleration = f /. m;;
 a engine body;; (* still oops *)
 (*- : float = 0.000244*)
 ```
+<!-- .element: data-thebe-executable -->
 
 ---vert---
 
@@ -120,6 +125,7 @@ a engine body;;
        ^^^^^^
 Error: This expression has type force but an expression was expected of type mass*)
 ```
+<!-- .element: data-thebe-executable -->
 
 ---
 
@@ -137,6 +143,7 @@ let area = function | (Point | Line _) -> 0.0
   | (Rectangle (w, h)) -> w *. h;;
 (*val area : shape -> float = <fun>*)
 ```
+<!-- .element: data-thebe-executable -->
 
 ---
 
@@ -154,6 +161,7 @@ Warning 8: this pattern-matching is not exhaustive.*)
 let Circle radius = line;;
 (*Exception: Match_failure*)
 ```
+<!-- .element: data-thebe-executable -->
 
 ---vert---
 
@@ -165,6 +173,7 @@ let Point = 5.3;;
 (*          ^^^
 Error: This expression has type float but an expression was expected of type shape*)
 ```
+<!-- .element: data-thebe-executable -->
 
 ---
 
@@ -182,6 +191,7 @@ let rec length = function
   | (x::xs) -> 1 + length xs;;
 (*val length : intlist -> int = <fun>*)
 ```
+<!-- .element: data-thebe-executable -->
 
 ---
 
@@ -196,6 +206,7 @@ type 'a list =
 "hello" :: "world" :: [];;
 (*- : string list = ["hello"; "world"]*)
 ```
+<!-- .element: data-thebe-executable -->
 
 ---vert---
 
@@ -214,6 +225,7 @@ hd' [1; 2; 3];;
 hd' [];;
 (*- : 'a option = None*)
 ```
+<!-- .element: data-thebe-executable -->
 
 ---vert---
 
@@ -233,6 +245,7 @@ let five_or_hello = if true then five else hello;;
 let int_char_list = [Type1 5; Type2 'a'];;
 (*val int_char_list : (int, char) union list = [Type1 5; Type2 'a']*)
 ```
+<!-- .element: data-thebe-executable -->
 
 ---
 

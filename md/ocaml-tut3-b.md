@@ -21,8 +21,9 @@ module MyModule = struct
     let answer = 42
     exception Failure of int
     type key = int
-end
+end;;
 ```
+<!-- .element: data-thebe-executable -->
 
 ---vert---
 
@@ -32,6 +33,7 @@ outside a module refer to a binding from another module by:
 MyModule.answer;;
 (*- : int = 42*)
 ```
+<!-- .element: data-thebe-executable -->
 
 ---vert---
 
@@ -48,6 +50,7 @@ end
 ```ocaml
 open MyModule;;
 ```
+<!-- .element: data-thebe-executable -->
 
 * used to get direct access to the bindings of a module
 * considered bad style
@@ -73,16 +76,17 @@ end
 ```ocaml
 module type MATHLIB = sig
     val pi: float
-    val div: float -> float
+    val div: float -> float -> float
     exception DivideByZero
-end
+end;;
 
 module MathLib: MATHLIB = struct
     let pi = 3.14
     let div x y = x /. y
     exception DivideByZero
-end
+end;;
 ```
+<!-- .element: data-thebe-executable -->
 
 ---vert---
 
@@ -92,15 +96,14 @@ a module will not type-check unless it matches the signature
 module type CONSTANTS = sig
     val pi: float
     val e: float
-end
+end;;
 
 module MathConstants: CONSTANTS = struct
     let pi = 3.14
-end
-
-(*Error: Signature mismatch:
-The value `e' is required but not provided*)
+end;;
+(*Error: Signature mismatch*)
 ```
+<!-- .element: data-thebe-executable -->
 
 ---
 

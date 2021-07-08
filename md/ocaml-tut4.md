@@ -7,11 +7,12 @@
 a list is an __immutable__ finite sequence of elements
 
 ```ocaml
-[3; 5; 9]: int list
-["a"; "list"]: string list
-["🍏"; "🍊"; "🍌"]: string list
-[]: 'a list
+([3; 5; 9]: int list);;
+(["a"; "list"]: string list);;
+(["🍏"; "🍊"; "🍌"]: string list);;
+([]: 'a list);;
 ```
+<!-- .element: data-thebe-executable -->
 
 ---vert---
 
@@ -21,6 +22,9 @@ order matters
 [1; 2; 3] <> [3; 2; 1];;
 (*- : bool = true*)
 ```
+<!-- .element: data-thebe-executable -->
+
+---vert---
 
 and repetitions count
 
@@ -28,31 +32,33 @@ and repetitions count
 [3; 3; 3] <> [3];;
 (*- : bool = true*)
 ```
+<!-- .element: data-thebe-executable -->
 
 ---vert---
 
 elements may have any type
 
 ```ocaml
-[(1,"One"); (2,"Two")] : (int*string) list
-[[3.1]; []; [5.7; ~0.6]]: real list list
+([(1,"One"); (2,"Two")] : (int*string) list);;
+([[3.1]; []; [5.7; -0.6]]: float list list);;
 ```
+<!-- .element: data-thebe-executable -->
 
 ... but all elements must have the same type
 
 ```ocaml
-[5; "five"];;
-(*  ^^^^^^
-Error: This expression has type string but an expression was expected of type int*)
+[5; "five"];; (*ERROR!*)
 ```
+<!-- .element: data-thebe-executable -->
 
 ---vert---
 
 the empty list has a polymorphic type
 
 ```ocaml
-[]: 'a list
+([]: 'a list);;
 ```
+<!-- .element: data-thebe-executable -->
 
 ---
 
@@ -73,6 +79,7 @@ use the infix operator `::` (aka. `cons`) to build a list
 1 :: 2 :: 3 :: [];;
 (*- : int list = [1; 2; 3]*)
 ```
+<!-- .element: data-thebe-executable -->
 
 ---vert---
 
@@ -86,7 +93,7 @@ use the infix operator `::` (aka. `cons`) to build a list
 
 ---vert---
 
-`::` is a *constructor* so it can be used in patterns
+`::` is a **constructor** so it can be used in patterns
 
 ```ocaml
 let replace_head = function
@@ -94,6 +101,7 @@ let replace_head = function
   | ([], _) -> [];;
 (*val replace_head : 'a list * 'a -> 'a list = <fun>*)
 ```
+<!-- .element: data-thebe-executable -->
 
 ---
 
@@ -104,20 +112,24 @@ let replace_head = function
 `List.hd` - evaluates to the head of a non-empty list
 
 ```ocaml
-let hd (x::_) = x;;
-(*Warning 8: this pattern-matching is not exhaustive.*)
+let hd = function
+  | [] -> raise (Failure "hd")
+  | x::_ -> x;;
 (*val hd : 'a list -> 'a = <fun>*)
 ```
+<!-- .element: data-thebe-executable -->
 
 ---vert---
 
 `List.tl` - evaluates to the tail of a non-empty list
 
 ```ocaml
-let tl (_::xs) = xs;;
-(*Warning 8: this pattern-matching is not exhaustive.*)
+let tl = function
+  | [] -> raise (Failure "tl")
+  | _::xs -> xs;;
 (*val tl : 'a list -> 'a list = <fun>*)
 ```
+<!-- .element: data-thebe-executable -->
 
 ---vert---
 
@@ -141,6 +153,7 @@ let (--) = range;;
 2 -- 5;;
 (*- : int list = [2; 3; 4]*)
 ```
+<!-- .element: data-thebe-executable -->
 
 ---
 
@@ -155,19 +168,23 @@ let (--) = range;;
 ### the computation of `take`
 
 ```ocaml
-let rec take = function
-  | (0, _) -> []
-  | (i, x::xs) -> x :: take (i-1, xs);;
-(*val take : int * 'a list -> 'a list = <fun>*)
+let rec take n l = match n, l with
+  | 0, _ -> []
+  | _, [] -> raise (Failure "take")
+  | i, x::xs -> x :: take (i - 1) xs;;
+(*val take : int -> 'a list -> 'a list = <fun>*)
+```
+<!-- .element: data-thebe-executable -->
 
-take (3, [9;8;7;6;5;4])
-9 :: take (2, [8;7;6;5;4])
-9 :: (8 :: take (1, [7;6;5;4]))
-9 :: (8 :: (7 :: take (0, [6;5;4])))
-9 :: (8 :: (7 :: []))
-9 :: (8 :: [7])
-9 :: [8;7]
-[9;8;7]
+```ocaml
+(take 3 [9;8;7;6;5;4])
+9 :: (take 2 [8;7;6;5;4])
+9 :: 8 :: (take 1 [7;6;5;4])
+9 :: 8 :: 7 :: (take 0 [6;5;4])
+9 :: 8 :: 7 :: [])
+9 :: 8 :: [7]
+9 :: [8; 7]
+[9; 8; 7]
 ```
 
 ---vert---
@@ -175,16 +192,20 @@ take (3, [9;8;7;6;5;4])
 ### the computation of `drop`
 
 ```ocaml
-let rec drop = function
-  | (0, xs)    -> xs
-  | (i, _::xs) -> drop (i-1, xs);;
-(*val drop : int * 'a list -> 'a list = <fun>*)
+let rec drop n l = match n, l with
+  | 0, xs -> xs
+  | _, [] -> raise (Failure "drop")
+  | i, _::xs -> drop (i - 1) xs;;
+(*val drop : int -> 'a list -> 'a list = <fun>*)
+```
+<!-- .element: data-thebe-executable -->
 
-drop (3, [9;8;7;6;5;4])
-drop (2,   [8;7;6;5;4])
-drop (1,     [7;6;5;4])
-drop (0,       [6;5;4])
-[6;5;4]
+```ocaml
+drop 3 [9; 8; 7; 6; 5; 4]
+drop 2    [8; 7; 6; 5; 4]
+drop 1       [7; 6; 5; 4]
+drop 0          [6; 5; 4]
+[6; 5; 4]
 ```
 
 ---
@@ -196,38 +217,71 @@ drop (0,       [6;5;4])
 normal recursion
 
 ```ocaml
-let rec take = function
-  | (0, _) -> []
-  | (i, x::xs) -> x :: take (i-1, xs);;
+let rec take n l = match n, l with
+  | 0, _ -> []
+  | _, [] -> raise (Failure "take")
+  | i, x::xs -> x :: take (i - 1) xs;;
 ```
+<!-- .element: data-thebe-executable -->
 
 tail recursion
 
 ```ocaml
-let rec drop = function
-  | (0, xs)    -> xs
-  | (i, _::xs) -> drop (i-1, xs);;
+let rec drop n l = match n, l with
+  | 0, xs -> xs
+  | _, [] -> raise (Failure "drop")
+  | i, _::xs -> drop (i - 1) xs;;
 ```
+<!-- .element: data-thebe-executable -->
 
 ---vert---
 
 ### normal to tail recursive
 
 ```ocaml
-let rec length = function
+let rec rec_length = function
   | [] -> 0
-  | (_::xs) -> 1 + length xs;;
+  | (_::xs) -> 1 + rec_length xs;;
 ```
+<!-- .element: data-thebe-executable -->
 
 use an **accumulator** to make it iterative
 
 ```ocaml
-let rec ilen = function
-  | (n, [])    -> n
-  | (n, _::xs) -> ilen (n+1, xs);;
+let rec aux acc = function
+  | []    -> acc
+  | _::xs -> aux (acc + 1) xs;;
 
-let length xs = ilen (0, xs);;
+let iter_length xs = aux 0 xs;;
 ```
+<!-- .element: data-thebe-executable -->
+
+---vert---
+
+let's test them!
+
+```ocaml
+let repeat n =
+  let rec aux acc = function
+    | 0 -> acc
+    | n -> aux (0::acc) (n-1) in
+  aux [] n;;
+
+let long_list = repeat 1000000;;
+```
+<!-- .element: data-thebe-executable -->
+
+---vert---
+
+```ocaml
+iter_length long_list;;
+```
+<!-- .element: data-thebe-executable -->
+
+```ocaml
+rec_length long_list;;
+```
+<!-- .element: data-thebe-executable -->
 
 ---
 
@@ -242,8 +296,8 @@ let rec (@) l1 l2 = match (l1, l2) with
 (*val ( @ ) : 'a list -> 'a list -> 'a list = <fun>*)
 
 ["Append"; "is"] @ ["never"; "boring"];;
-(*- : string list = ["Append"; "is"; "never"; "boring"]*)
 ```
+<!-- .element: data-thebe-executable -->
 
 * is it tail recursive?
 * why can't it be used in patterns?
@@ -271,6 +325,7 @@ let rec powoftwo n =
   (even n && powoftwo (n / 2));;
 (*val powoftwo : int -> bool = <fun>*)
 ```
+<!-- .element: data-thebe-executable -->
 
 is `powoftwo` tail-recursive?
 
@@ -291,6 +346,7 @@ let sqlist = map (fun x -> x * x);;
 sqlist [1;2;3];;
 (*- : int list = [1; 4; 9]*)
 ```
+<!-- .element: data-thebe-executable -->
 
 ---vert---
 
@@ -301,12 +357,12 @@ transposing a matrix using `map`
 ```ocaml
 let rec transp = function
   | []::_ -> []
-  | rows -> (map hd rows) :: transp (map tl rows);;
+  | rows -> List.(map hd rows) :: transp List.(map tl rows);;
 (*val transp : 'a list list -> 'a list list = <fun>*)
 
 transp [[1;2;3];[4;5;6];[7;8;9]];;
-(*- : int list list = [[1; 4; 7]; [2; 5; 8]; [3; 6; 9]]*)
 ```
+<!-- .element: data-thebe-executable -->
 
 ---
 
@@ -320,8 +376,8 @@ let rec filter pred = function
 (*val filter : ('a -> bool) -> 'a list -> 'a list = <fun>*)
 
 filter (fun x -> x mod 2 = 0) [1; 2; 3; 4; 5];;
-(*- : int list = [2; 4]*)
 ```
+<!-- .element: data-thebe-executable -->
 
 ---
 
@@ -336,6 +392,7 @@ let rec filter_map f = function
       | Some x' -> x'::tail;;
 (*val filter_map : ('a -> 'b option) -> 'a list -> 'b list = <fun>*)
 ```
+<!-- .element: data-thebe-executable -->
 
 ---vert---
 
@@ -346,9 +403,10 @@ a polynomial is represented as a list of `$(coeff,degree)$` pairs
 `$$5x^3 + 2x + 7$$`
 
 ```ocaml
-type polynomial = (int*int) list;;
-let a: polynomial = [(5,3); (2,1); (7,0)];;
+type polynomial = (int * int) list;;
+let a: polynomial = [(5, 3); (2, 1); (7, 0)];;
 ```
+<!-- .element: data-thebe-executable -->
 
 ---vert---
 
@@ -357,12 +415,13 @@ taking the derivative of a polynomial
 ```ocaml
 let aux (coeff, deg) = if deg = 0 then None else Some (coeff*deg, deg-1);;
 
-let derive (p: polynomial): polynomial = filter_map aux p;;
+let derive (p: polynomial): polynomial = List.filter_map aux p;;
 (*val derive : polynomial -> polynomial = <fun>*)
 
 derive a;;
 (*- : polynomial = [(15, 2); (2, 0)]*)
 ```
+<!-- .element: data-thebe-executable -->
 
 ---
 
@@ -378,8 +437,9 @@ let rec fold_left f init = function
   | x::xs -> fold_left f (f init x) xs;;
 (*val fold_left : ('a -> 'b -> 'a) -> 'a -> 'b list -> 'a = <fun>*)
 ```
+<!-- .element: data-thebe-executable -->
 
-calculates `$[x_1, x_2, … ,x_n] \rightarrow f(x_n, … ,f(x_2, f(x_1,init)))$`
+computes `$[x_1, x_2, … ,x_n] \rightarrow f(x_n, … ,f(x_2, f(x_1,init)))$`
 
 ---vert---
 
@@ -391,8 +451,9 @@ let rec fold_right f init = function
   | x::xs -> f (fold_right f init xs) x;;
 (*val fold_right : ('a -> 'b -> 'a) -> 'a -> 'b list -> 'a = <fun>*)
 ```
+<!-- .element: data-thebe-executable -->
 
-calculates `$[x_1, x_2, … ,x_n] \rightarrow f(x1, … ,f(xn-1, f(xn,init)))$`
+computes `$[x_1, x_2, … ,x_n] \rightarrow f(x1, … ,f(xn-1, f(xn,init)))$`
 
 ---vert---
 
@@ -410,6 +471,7 @@ let reverse l = List.fold_left (fun l x -> x::l) [] l;;
 let (@) xs ys = List.fold_right List.cons xs ys;;
 (*val ( @ ) : 'a list -> 'a list -> 'a list = <fun>*)
 ```
+<!-- .element: data-thebe-executable -->
 
 ---
 
@@ -425,6 +487,7 @@ let rec exists pred = function
   | x::xs -> (pred x) || exists pred xs;;
 (*val exists : ('a -> bool) -> 'a list -> bool = <fun>*)
 ```
+<!-- .element: data-thebe-executable -->
 
 checks if the predicate `pred` is satisfied by at least one element of the list
 
@@ -432,6 +495,7 @@ checks if the predicate `pred` is satisfied by at least one element of the list
 List.exists ((>) 0) [1; 2; -3; 4];;
 (*- : bool = true*)
 ```
+<!-- .element: data-thebe-executable -->
 
 ---vert---
 
@@ -443,6 +507,7 @@ let rec for_all pred = function
   | x::xs -> (pred x) && for_all pred xs;;
 (*val for_all : ('a -> bool) -> 'a list -> bool = <fun>*)
 ```
+<!-- .element: data-thebe-executable -->
 
 checks if the predicate `pred` is satisfied by **all** elements of the list
 
@@ -450,6 +515,7 @@ checks if the predicate `pred` is satisfied by **all** elements of the list
 List.for_all ((<=) 0) [1; 2; -3; 4];;
 (*- : bool = false*)
 ```
+<!-- .element: data-thebe-executable -->
 
 ---vert---
 
@@ -458,6 +524,7 @@ let disjoint xs ys =
     List.for_all (fun x -> List.for_all ((<>) x) ys) xs;;
 (*val disjoint : 'a list -> 'a list -> bool = <fun>*)
 ```
+<!-- .element: data-thebe-executable -->
 
 ---
 
@@ -473,6 +540,7 @@ equality is polymorphic
 (=);;
 (*- : 'a -> 'a -> bool = <fun>*)
 ```
+<!-- .element: data-thebe-executable -->
 
 ---
 

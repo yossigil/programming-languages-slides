@@ -27,6 +27,7 @@ match method_a problem with
   | Impossible -> "No Good"
 ;;
 ```
+<!-- .element: data-thebe-executable -->
 
 it can be tedious and requires explicit handling
 
@@ -56,6 +57,7 @@ exception Problem of int;;
 Problem 5;;
 (*- : exn = Problem 5*)
 ```
+<!-- .element: data-thebe-executable -->
 
 ---vert---
 
@@ -75,14 +77,17 @@ let whats_the_problem (Problem p) = p;;
 (*Warning 8: this pattern-matching is not exhaustive.*)
 (*val whats_the_problem : exn -> int = <fun>*)
 ```
+<!-- .element: data-thebe-executable -->
 
 ---
 
 ### raising exceptions - semantics
 
 ```ocaml
+exception Exp;;
 raise Exp;;
 ```
+<!-- .element: data-thebe-executable -->
 
 * the expression `Exp` of type `exn` evaluates to `e`
 * `raise Exp` evaluates to an <span style="color: red;">exception packet</span> containing `e`
@@ -104,24 +109,7 @@ raise (Exn1 (raise Exp));; (* Exn1 is a constructor *)
 
 let name = raise Exp in some_expression;;
 ```
-
----
-
-### fixing `List.hd` and `List.tl`
-
-```ocaml
-exception Failure of string;
-
-let hd = function
-  | [] -> raise (Failure "hd")
-  | x::_ -> x;;
-(*val hd : 'a list -> 'a = <fun>*)
-
-let tl = function
-  | [] -> raise (Failure "tl")
-  | _::xs -> xs;;
-(*val tl : 'a list -> 'a list = <fun>*)
-```
+<!-- .element: data-thebe-executable -->
 
 ---
 
@@ -141,6 +129,7 @@ try Exp_0 with
 let rec len l = try 1 + len (tl l) with Failure _ -> 0;;
 (*val len : 'a list -> int = <fun>*)
 ```
+<!-- .element: data-thebe-executable -->
 
 ---
 
@@ -171,6 +160,7 @@ let throw _ = raise (Failure "");;
 let bar x = if x > 0 then x else raise (Failure "");;
 (*val bar : int -> int = <fun>*)
 ```
+<!-- .element: data-thebe-executable -->
 
 ---
 
@@ -188,6 +178,7 @@ match method_a problem with
   | Impossible -> "No Good"
 ;;
 ```
+<!-- .element: data-thebe-executable -->
 
 and now with exceptions:
 
@@ -198,6 +189,7 @@ end with
   | Failure _ -> "Both failed"
   | Impossible -> "No Good";;
 ```
+<!-- .element: data-thebe-executable -->
 
 ---
 
@@ -212,5 +204,6 @@ end with
   * to catch such an exception use
 
     ```ocaml
-    try List.hd[] with Failure _ -> 0;;
+    try List.hd [] with Failure _ -> 0;;
     ```
+    <!-- .element: data-thebe-executable -->

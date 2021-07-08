@@ -17,12 +17,12 @@
 defined in the `Seq` module:
 
 ```ocaml
-type 'a t = unit -> 'a node;;
-
-type 'a node = 
+type 'a t = unit -> 'a node
+and 'a node = 
   | Nil
   | Cons of 'a * 'a t;;
 ```
+<!-- .element: data-thebe-executable -->
 
 * `Seq.t` is the sequence type
 * `Seq.node` is a fully evaluated sequence node
@@ -42,6 +42,7 @@ let seq23 () = Seq.Cons (2, return 3);;
 
 let seq123 () = Seq.Cons (1, seq23);;
 ```
+<!-- .element: data-thebe-executable -->
 
 a node holds an element and the tail of the sequence which is a sequence itself.
 
@@ -58,6 +59,7 @@ let tail xf = match xf () with
   | Nil -> raise (Failure "tail");;
 (*val tail : (unit -> 'a Seq.node) -> 'a Seq.t = <fun>*)
 ```
+<!-- .element: data-thebe-executable -->
 
 ---
 
@@ -73,6 +75,7 @@ head (from 1);;
 head (tail (from 1));;
 (*- : int = 2*)
 ```
+<!-- .element: data-thebe-executable -->
 
 ---vert---
 
@@ -85,6 +88,7 @@ let rec squares s () = match s() with
 head (tail (tail (tail (tail (squares (from 1))))));;
 (*- : int = 25*)
 ```
+<!-- .element: data-thebe-executable -->
 
 ---
 
@@ -99,6 +103,7 @@ let rec addq s q () = match (s(), q()) with
   | _ -> Seq.Nil;;
 (*val addq : int Seq.t -> int Seq.t -> int Seq.t = <fun>*)
 ```
+<!-- .element: data-thebe-executable -->
 
 ---vert---
 
@@ -114,6 +119,7 @@ let rec appendq l r = match l () with
   | Seq.Cons(x, xf) -> fun () -> Seq.Cons(x, appendq xf r);;
 (*val appendq : 'a Seq.t -> 'a Seq.t -> 'a Seq.t = <fun>*)
 ```
+<!-- .element: data-thebe-executable -->
 
 what would `(appendq xq yq)` be if `xq` is infinite?
 
@@ -128,6 +134,7 @@ let rec interleaving l r = match l () with
       fun () -> Seq.Cons(x, interleaving r xf);;
 (*val interleaving : 'a Seq.t -> 'a Seq.t -> 'a Seq.t = <fun>*)
 ```
+<!-- .element: data-thebe-executable -->
 
 ---vert---
 
@@ -139,6 +146,7 @@ let rec mapq f seq () = match seq () with
   | Seq.Cons(x, xf) -> Seq.Cons(f x, mapq f xf);;
 (*val mapq : ('a -> 'b) -> 'a Seq.t -> 'b Seq.t = <fun>*)
 ```
+<!-- .element: data-thebe-executable -->
 
 ---vert---
 
@@ -151,6 +159,7 @@ let rec filterq pred seq () = match seq () with
       -> Seq.Cons(x, filterq pred xf)
   | Seq.Cons(_, xf) -> filterq pred xf ();;
 ```
+<!-- .element: data-thebe-executable -->
 
 ---
 

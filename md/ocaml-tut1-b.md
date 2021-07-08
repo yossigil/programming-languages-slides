@@ -18,6 +18,7 @@ let (--) x y = sqrt(x *. x +. y *. y);;
 1.0 -- 3.0 -- 2.0 -- 5.0;;
 (*- : float = 6.24499799839839831*)
 ```
+<!-- .element: data-thebe-executable -->
 
 ---vert---
 
@@ -30,6 +31,7 @@ the operator can be used as a regular function
 (--) 1. 3.;;
 (*- : float = 3.16227766016837952*)
 ```
+<!-- .element: data-thebe-executable -->
 
 ---vert---
 
@@ -49,6 +51,7 @@ any function of two arguments is actually a **curried** function of one argument
 let prefix pre post = pre ^ post;;
 (*val prefix : string -> string -> string = <fun>*)
 ```
+<!-- .element: data-thebe-executable -->
 
 is equivalent to:
 
@@ -56,6 +59,7 @@ is equivalent to:
 let prefix pre = fun post -> pre ^ post;;
 (*val prefix : string -> string -> string = <fun>*)
 ```
+<!-- .element: data-thebe-executable -->
 
 ---vert---
 
@@ -84,6 +88,7 @@ let doctorify = prefix "Dr. ";;
 doctorify "Tomer";;
 (*- : string = "Dr. Tomer"*)
 ```
+<!-- .element: data-thebe-executable -->
 
 ---
 
@@ -99,6 +104,7 @@ doctorify "Tomer";;
 prefix "Dr. " "Tomer";;
 (*- : string = "Dr. Tomer"*)
 ```
+<!-- .element: data-thebe-executable -->
 
 ---
 
@@ -119,6 +125,7 @@ val times_4 = times 4;
 times_4 8;
 (*val it = 32 : int*)
 ```
+<!-- .element: data-thebe-executable -->
 
 ---
 
@@ -140,6 +147,7 @@ let g = (fun x -> x - Char.code '0') ^^ Char.code;;
 g '1';;
 (*- : int = 1*)
 ```
+<!-- .element: data-thebe-executable -->
 
 ---
 
