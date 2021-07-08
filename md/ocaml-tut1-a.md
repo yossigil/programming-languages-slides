@@ -198,7 +198,7 @@ foo (-1) (-2) (*OK*)
 * sequence of digits
   * 0
   * 01234
-* `-` for unary minus sign
+* `-` or `~-` for unary minus sign
   * `-23`
   * `-85601435654638`
 * infix operators: `+` `-` `*` `/` `mod`
@@ -222,8 +222,8 @@ conventional precedence (parenthesis can be dropped without change of meaning)
   * `7e-5`
   * `-1.2e12`
   * `-123.4e-2` is the same as `-1.234`
-* infix operators: `+.` `-.` `*.` `/.` (all end with a dot)
-* `-.` for unary minus (`-` is allowed for literals)
+* infix operators: `+.` `-.` `*.` `/.` (all end with a dot) and `**` (exponentiation)
+* `-.` or `~-.` for unary minus (`-` is allowed for literals)
 
 ---vert---
 
@@ -648,6 +648,35 @@ let rec facti (n, p) =
 
 ---
 
+### type constraints
+
+constraining parameters
+
+```ocaml
+let foo (n: int) = n;;
+```
+<!-- .element: data-thebe-executable -->
+
+---vert---
+
+constraining the return type
+
+```ocaml
+let foo n : int = n;;
+```
+<!-- .element: data-thebe-executable -->
+
+---vert---
+
+constraining an expression's type
+
+```ocaml
+let foo n = (n : int);;
+```
+<!-- .element: data-thebe-executable -->
+
+---vert---
+
 #### what will be printed?
 
 ```ocaml
@@ -672,6 +701,13 @@ let min x y: float = if x < y then x else y;;
 ---vert---
 
 ```ocaml
+let min x y = if x < y then x else (y: string);;
+```
+<!-- .element: data-thebe-executable -->
+
+---vert---
+
+```ocaml
 let min_abs x y = if x *. x < y *. y then x else y;;
 ```
 <!-- .element: data-thebe-executable -->
@@ -684,7 +720,7 @@ write a function `foo` such that its type is:
 val foo: int -> float -> float = <fun>
 ```
 
-but you can't use type annotation
+but you can't use type annotations
 
 ```ocaml
 let foo
