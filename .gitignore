@@ -3,3 +3,4 @@ node_modules
 md-to-html.sh
 slides
 notebooks
+package-lock.json

@@ -1,11 +1,7 @@
 {
-  "name": "reveal.js",
-  "version": "4.1.3",
-  "description": "The HTML Presentation Framework",
-  "homepage": "https://revealjs.com",
-  "subdomain": "revealjs",
-  "main": "dist/reveal.js",
-  "module": "dist/reveal.esm.js",
+  "name": "pl-slides",
+  "version": "0.1.0",
+  "description": "",
   "license": "MIT",
   "scripts": {
     "test": "gulp test",
@@ -15,20 +11,14 @@
     "build-thebe": "cd thebe; npm run-script build",
     "notebook": "jupyter notebook --NotebookApp.tornado_settings='{\"headers\":{\"Access-Control-Allow-Origin\": \"*\", \"Content-Security-Policy\": \"frame-ancestors self http://localhost:8000/\"}}' --NotebookApp.token='' --NotebookApp.password='' --NotebookApp.allow_origin='*' --NotebookApp.disable_check_xsrf=\"True\" --no-browser --NotebookApp.port=16789"
   },
-  "author": {
-    "name": "Hakim El Hattab",
-    "email": "hakim.elhattab@gmail.com",
-    "web": "https://hakim.se"
-  },
   "repository": {
     "type": "git",
-    "url": "git://github.com/hakimel/reveal.js.git"
+    "url": "git://github.com/twyair/programming-languages-slides.git"
   },
   "engines": {
     "node": ">=10.0.0"
   },
   "keywords": [
-    "reveal",
     "slides",
     "presentation"
   ],
