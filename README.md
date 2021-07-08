@@ -1,4 +1,36 @@
-# programming-languages-slides
+# programming languages slides
+
+## install
+
+```bash
+git clone --recurse-submodules https://github.com/twyair/programming-languages-slides
+
+npm install
+
+cd thebe
+npm install
+npm build
+```
+
+## build
+
+```bash
+npm run generate-slides
+```
+
+## run
+
+```bash
+npm start
+```
+
+and on a different terminal:
+
+```bash
+npm notebook
+```
+
+browse to <http://localhost:8000/>
 
 ## TODO
 
