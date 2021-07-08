@@ -11,9 +11,12 @@ function buildHtml(output_dir, renderTemplate, name) {
     });
 }
 
-//
-function generate_slides(output_dir, directory, template_name, prefix) {
-    fs.readdir(directory, (err, files) => {
+const output_dir = path.join(__dirname, "./slides");
+const md_dir = path.join(__dirname, "./md");
+
+
+function generate_slides(template_name, prefix) {
+    fs.readdir(md_dir, (err, files) => {
         if (err) {
             console.error("Could not list the directory.", err);
             process.exit(1);
@@ -30,5 +33,5 @@ function generate_slides(output_dir, directory, template_name, prefix) {
     });
 }
 
-generate_slides(path.join(__dirname, "./slides"), path.join(__dirname, "./md"), 'slide-template.hbs', 'tut');
-generate_slides(path.join(__dirname, "./slides"), path.join(__dirname, "./md"), 'prolog-slide-template.hbs', 'prolog-');
+generate_slides('ocaml-slide-template.hbs', 'ocaml-');
+generate_slides('prolog-slide-template.hbs', 'prolog-');
