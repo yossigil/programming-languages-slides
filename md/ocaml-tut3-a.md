@@ -207,3 +207,6 @@ end with
     try List.hd [] with Failure _ -> 0;;
     ```
     <!-- .element: data-thebe-executable -->
+* `Match_failure of (string * int * int)` raised when none of the cases of a pattern-matching apply
+* `Division_by_zero` when an integer is divided by `0`
+* see the [index of exceptions](https://ocaml.org/api/index_exceptions.html) for more
