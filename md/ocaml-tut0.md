@@ -18,13 +18,22 @@ taken from the [OCaml for Windows project](https://fdopen.github.io/opam-reposit
 
 ---vert---
 
+make sure you have the correct version
+
+```bash
+ocaml --version
+# The OCaml toplevel, version 4.12.0
+```
+
+---vert---
+
 ### install tools
 
 * click on the OCaml shortcut created on your desktop
 * run the following:
 
 ```bash
-opam install dune utop ocaml-lsp-server ocamlformat
+opam install dune utop ocaml-lsp-server ocamlformat merlin
 ```
 
 ---vert---
@@ -52,7 +61,15 @@ and you can start running code! 🎉
 ```bash
 sudo apt install ocaml opam
 
-opam install dune utop ocaml-lsp-server ocamlformat
+opam install dune utop ocaml-lsp-server ocamlformat merlin
+```
+
+---vert---
+
+change to the version we use in this course
+
+```bash
+opam switch create 4.12.0 ocaml-variants.4.12.0+options
 ```
 
 ---vert---

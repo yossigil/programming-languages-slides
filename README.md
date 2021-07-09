@@ -5,7 +5,7 @@
 - npm
 - nodejs
 - jupyter-notebook
-- ocaml
+- ocaml 4.12
 - ocaml-merlin <https://github.com/ocaml/merlin>
 - ocaml-jupyter <https://github.com/akabe/ocaml-jupyter>
 
@@ -42,7 +42,7 @@ and on a different terminal:
 npm run notebook
 ```
 
-go to to <http://localhost:8000/>
+go to <http://localhost:8000/>
 
 ## TODO
 

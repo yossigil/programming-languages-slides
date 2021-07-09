@@ -14,6 +14,12 @@
 		<script src="../thebe/lib/index.js"></script>
 
 		<style>
+			.reveal pre {
+				width: 100%;
+			}
+			.reveal .code-wrapper code {
+				font-size: 20px;
+			}
 			.p-Widget, .lm-Widget {
 				overflow: auto;
 			}
@@ -94,8 +100,8 @@
 					requestKernel: true,
 					outputSelector: '[data-output]',
 					kernelOptions: {
-						name: "ocaml-jupyter",
-						kernelName: "ocaml-jupyter",
+						name: "ocaml-jupyter-4.12.0",
+						kernelName: "ocaml-jupyter-4.12.0",
 						path: ".",
 						serverSettings: {
 							"baseUrl": "http://localhost:16789",
