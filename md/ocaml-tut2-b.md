@@ -145,6 +145,21 @@ let area = function | (Point | Line _) -> 0.0
 ```
 <!-- .element: data-thebe-executable -->
 
+---vert---
+
+the arguments of variant types can be defined like records
+
+```ocaml
+type shape =
+    Point
+  | Line of float
+  | Circle of float
+  | Rectangle of {width: float; height: float};;
+
+let r = Rectangle {width=5.; height=6.}
+```
+<!-- .element: data-thebe-executable -->
+
 ---
 
 ### pattern matching
@@ -160,18 +175,6 @@ Warning 8: this pattern-matching is not exhaustive.*)
 
 let Circle radius = line;;
 (*Exception: Match_failure*)
-```
-<!-- .element: data-thebe-executable -->
-
----vert---
-
-⚠️ constructors cannot be rebound by `let`
-
-```ocaml
-let Point = Point;; (*OK*)
-let Point = 5.3;;
-(*          ^^^
-Error: This expression has type float but an expression was expected of type shape*)
 ```
 <!-- .element: data-thebe-executable -->
 
