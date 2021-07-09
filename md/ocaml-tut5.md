@@ -29,16 +29,16 @@ and 'a node =
 
 ---vert---
 
-a sequence is a function that takes `()` and returns a sequence node.
+a sequence is a **function** that takes `()` and returns a sequence node.
 
 ```ocaml
 (*`empty` is an empty sequence*)
 let empty () = Seq.Nil;;
 
 (*`return v` is a sequence containing only `v`*)
-let return v () = Seq.Cons (v, empty);;
+let return v () = Seq.Cons (v, Seq.empty);;
 
-let seq23 () = Seq.Cons (2, return 3);;
+let seq23 () = Seq.Cons (2, Seq.return 3);;
 
 let seq123 () = Seq.Cons (1, seq23);;
 ```
@@ -92,6 +92,86 @@ head (tail (tail (tail (tail (squares (from 1))))));;
 
 ---
 
+### side note - chaining operator `|>`
+
+`|>` is a predefined operator for "reverse function application"
+
+```ocaml
+let ( |> ) x f = f x;;
+```
+<!-- .element: data-thebe-executable -->
+
+---vert---
+
+`|>` is used for chaining functions
+
+```ocaml
+from 1
+  |> squares
+  |> tail
+  |> tail
+  |> tail
+  |> tail
+  |> head;;
+```
+<!-- .element: data-thebe-executable -->
+
+isn't it much nicer?
+
+---vert---
+
+the standard library usually puts the "object" last in the parameter list
+
+```ocaml
+let open List in
+init 10 (fun _ -> Random.int 100)
+  |> filter (fun x -> x mod 2 = 0)
+  |> map (fun x -> x * x)
+  |> sort_uniq Int.compare;;
+```
+<!-- .element: data-thebe-executable -->
+
+---
+
+### standard library functions
+
+---vert---
+
+`List.to_seq` takes a list and returns a sequence
+
+```ocaml
+List.to_seq [1; 2; 3];;
+```
+<!-- .element: data-thebe-executable -->
+
+---vert---
+
+`List.of_seq` takes a sequence and returns a list
+
+```ocaml
+List.of_seq (List.to_seq [1; 2; 3]);;
+```
+<!-- .element: data-thebe-executable -->
+
+---vert---
+
+`Seq.map`, `Seq.filter`, `Seq.filter_map`, `Seq.fold_left`, `Seq.append` are the sequence equivalents of the known list functions
+
+---vert---
+
+`Seq.unfold` builds a sequence from a "step function" and an initial value
+
+```ocaml
+List.of_seq (
+  Seq.unfold
+    (fun n -> if n < 0 then None else Some (n, n - 1))
+    5
+);;
+```
+<!-- .element: data-thebe-executable -->
+
+---
+
 ### elementary sequence processing
 
 adding two sequences
@@ -107,59 +187,95 @@ let rec addq s q () = match (s(), q()) with
 
 ---vert---
 
-<!-- .slide: data-background-iframe="http://localhost:16789/notebooks/tut9-sequence-functions.ipynb" data-background-interactive -->
-
----vert---
-
 appending two sequences
 
 ```ocaml
-let rec appendq l r = match l () with
-  | Seq.Nil -> r
-  | Seq.Cons(x, xf) -> fun () -> Seq.Cons(x, appendq xf r);;
-(*val appendq : 'a Seq.t -> 'a Seq.t -> 'a Seq.t = <fun>*)
+val append : 'a Seq.t -> 'a Seq.t -> 'a Seq.t
+```
+
+```ocaml
+let rec append =
 ```
 <!-- .element: data-thebe-executable -->
 
-what would `(appendq xq yq)` be if `xq` is infinite?
+---vert---
+
+```ocaml
+let rec append l r = match l () with
+  | Seq.Nil -> r
+  | Seq.Cons(x, xf) -> fun () -> Seq.Cons(x, append xf r);;
+```
+<!-- .element: data-thebe-executable -->
+
+what would `(append xq yq)` be if `xq` is infinite?
 
 ---vert---
 
 interleaving two sequences
 
 ```ocaml
+val interleaving : 'a Seq.t -> 'a Seq.t -> 'a Seq.t
+```
+
+```ocaml
+let rec interleaving =
+```
+<!-- .element: data-thebe-executable -->
+
+---vert---
+
+```ocaml
 let rec interleaving l r = match l () with
   | Seq.Nil -> r
   | Seq.Cons(x, xf) ->
       fun () -> Seq.Cons(x, interleaving r xf);;
-(*val interleaving : 'a Seq.t -> 'a Seq.t -> 'a Seq.t = <fun>*)
 ```
 <!-- .element: data-thebe-executable -->
 
 ---vert---
 
-### `mapq`
+#### `map`
 
 ```ocaml
-let rec mapq f seq () = match seq () with
+val map : ('a -> 'b) -> 'a Seq.t -> 'b Seq.t
+```
+
+```ocaml
+let rec map =
+```
+<!-- .element: data-thebe-executable -->
+
+---vert---
+
+```ocaml
+let rec map f seq () = match seq () with
   | Seq.Nil -> Seq.Nil
-  | Seq.Cons(x, xf) -> Seq.Cons(f x, mapq f xf);;
-(*val mapq : ('a -> 'b) -> 'a Seq.t -> 'b Seq.t = <fun>*)
+  | Seq.Cons(x, xf) -> Seq.Cons(f x, map f xf);;
 ```
 <!-- .element: data-thebe-executable -->
 
 ---vert---
 
-### `filterq`
+#### `filter`
 
 ```ocaml
-let rec filterq pred seq () = match seq () with
+val filter : ('a -> bool) -> 'a Seq.t -> 'a Seq.t
+```
+
+```ocaml
+let rec filter =
+```
+<!-- .element: data-thebe-executable -->
+
+---vert---
+
+```ocaml
+let rec filter pred seq () = match seq () with
   | Seq.Nil -> Seq.Nil
   | Seq.Cons(x, xf) when pred x
-      -> Seq.Cons(x, filterq pred xf)
-  | Seq.Cons(_, xf) -> filterq pred xf ();;
+      -> Seq.Cons(x, filter pred xf)
+  | Seq.Cons(_, xf) -> filter pred xf ();;
 ```
-<!-- .element: data-thebe-executable -->
 
 ---
 
@@ -169,20 +285,203 @@ let rec filterq pred seq () = match seq () with
 
 ---vert---
 
-<!-- .slide: data-background-iframe="http://localhost:16789/notebooks/tut9-primes.ipynb" data-background-interactive -->
+`primes` should be the sequence of all primes
+
+🚩 **reminder** builtin operators `mod`, `<>`
+
+```ocaml
+let rec sieve s () =;;
+
+let primes = sieve (from 2);;
+```
+<!-- .element: data-thebe-executable -->
+
+---vert---
+
+```ocaml
+let rec sieve seq () = let open Seq in
+    match seq () with
+      | Nil -> Nil
+      | Cons (n, nf) -> Cons (n, sieve (filter (fun x -> x mod n <> 0) nf));;
+
+let primes = sieve (from 2);;
+head (tail (tail (tail (tail primes))));;
+```
+<!-- .element: data-thebe-executable -->
 
 ---
 
 ### exam questions
 
+---
+
+#### question 1
+
+```ocaml
+let rec map_3 f seq () = let open Seq in
+  match seq () with
+    | Nil -> Nil
+    | Cons (x, xf) -> if (x mod 3 = 0)
+      then Cons (f x, map_3 f xf)
+      else Cons (x, map_3 f xf);;
+```
+<!-- .element: data-thebe-executable -->
+
 ---vert---
 
-<!-- .slide: data-background-iframe="http://localhost:16789/notebooks/tut9-exam-question-1.ipynb" data-background-interactive -->
+```ocaml
+let rec mystery_1 f seq () = let open Seq in
+  match seq () with
+    | Nil -> Nil
+    | Cons (x, xf) -> Cons (
+        x,
+        xf |> map (fun a -> f x a) |> mystery_1 f
+      );;
+```
+<!-- .element: data-thebe-executable -->
+
+what would be printed?
+
+```ocaml
+mystery_1 ( + ) (from 0) |> tail |> tail |> tail |> head;;
+```
+<!-- .element: data-thebe-executable -->
 
 ---vert---
 
-<!-- .slide: data-background-iframe="http://localhost:16789/notebooks/tut9-exam-question-2.ipynb" data-background-interactive -->
+```ocaml
+let rec mystery_2 f seq () = let open Seq in
+  match seq () with
+    | Nil -> Nil
+    | Cons (x, xf) -> Cons (
+        x,
+        xf |> map_3 (fun a -> f x a) |> mystery_2 f
+      );;
+```
+<!-- .element: data-thebe-executable -->
+
+what would be printed?
+
+```ocaml
+mystery_2 ( + ) (from 0) |> tail |> tail |> tail |> tail |> head;;
+```
+<!-- .element: data-thebe-executable -->
+
+---
+
+#### question 2
+
+`is_empty` returns `true` iff the given sequence is empty
+
+```ocaml
+let is_empty
+```
+<!-- .element: data-thebe-executable -->
 
 ---vert---
 
-<!-- .slide: data-background-iframe="http://localhost:16789/notebooks/tut9-exam-question-3.ipynb" data-background-interactive -->
+```ocaml
+let is_empty seq = match seq () with
+  | Seq.Nil -> true
+  | Seq.Cons _ -> false;;
+```
+<!-- .element: data-thebe-executable -->
+
+---vert---
+
+`evens` returns a sequence of the elements at even indices of the given sequence (indexing starts with `1`)
+
+```ocaml
+
+```
+<!-- .element: data-thebe-executable -->
+
+---vert---
+
+```ocaml
+let rec aux seq flag () = match seq () with
+  | Seq.Nil -> Seq.Nil
+  | Seq.Cons (x, xf) -> let con = aux xf (not flag) in
+      if flag
+      then Seq.Cons (x, con)
+      else con ();;
+let evens seq = aux seq false;;
+```
+<!-- .element: data-thebe-executable -->
+
+---vert---
+
+`odds` is the same as `evens` but for odd indices
+
+```ocaml
+
+```
+<!-- .element: data-thebe-executable -->
+
+---vert---
+
+```ocaml
+let odds seq = aux seq true;;
+```
+<!-- .element: data-thebe-executable -->
+
+---vert---
+
+`switch` takes a sequence and swaps every odd-indexed element with the following element (if one exists)
+
+```ocaml
+(*...*)
+assert ([2;1;4;3;6;5;7] = ([1;2;3;4;5;6;7] |> List.to_seq |> switch |> List.of_seq));;
+```
+<!-- .element: data-thebe-executable -->
+
+---vert---
+
+```ocaml
+let switch seq = interleaving (evens seq) (odds seq);;
+```
+<!-- .element: data-thebe-executable -->
+
+---
+
+#### question 3
+
+`take` takes an integer `n` and a sequence and returns a sequence of the first `n` elements
+
+```ocaml
+(*...*)
+assert ([1;2;3] = ([1;2;3;4;5;6;7] |> List.to_seq |> take 3 |> List.of_seq));;
+```
+<!-- .element: data-thebe-executable -->
+
+---vert---
+
+```ocaml
+let rec take n s () = if n <= 0
+    then Seq.Nil
+    else match s () with
+      | Seq.Nil -> Seq.Nil
+      | Seq.Cons (x, xf) -> Seq.Cons (x, take (n - 1) xf);;
+```
+<!-- .element: data-thebe-executable -->
+
+---vert---
+
+`drop` takes an integer `n` and a sequence `s` and returns `s` without its first `n` elements
+
+```ocaml
+(*...*)
+assert ([4;5;6;7] = ([1;2;3;4;5;6;7] |> List.to_seq |> drop 3 |> List.of_seq));;
+```
+<!-- .element: data-thebe-executable -->
+
+---vert---
+
+```ocaml
+let rec drop n s = if n <= 0
+    then s
+    else match s () with
+      | Seq.Nil -> fun () -> Seq.Nil
+      | Seq.Cons (x, xf) -> drop (n - 1) xf;;
+```
+<!-- .element: data-thebe-executable -->
