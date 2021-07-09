@@ -412,12 +412,24 @@ me.name;;
 
 ---vert---
 
-TODO
-
 a record is identified by its fields
 
 ```ocaml
+let me = {name="Ofir"; age=30};;
+(*val me : person = {name = "Ofir"; age = 30}*)
 ```
+<!-- .element: data-thebe-executable -->
+
+note that `me` is of type `person`, it was inferred from the field names
+
+---vert---
+
+you can destructure records using `let`
+
+```ocaml
+let {name=name; age=age} = me;;
+```
+<!-- .element: data-thebe-executable -->
 
 ---
 
