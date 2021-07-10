@@ -56,5 +56,5 @@ go to <http://localhost:8000/>
 - [X] adapt the SML notebooks to OCaml
 - [ ] write the prolog tutorials
 - [X] autogenerate the files in slides/
-- [ ] find a way to call `Reveal.layout()` whenever a slide changes
+- [X] find a way to call `Reveal.layout()` whenever a slide changes
 - [ ] feature idea for `thebe`: make the kernel execute certain cells on load or when they first appear

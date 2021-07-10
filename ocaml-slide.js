@@ -18,7 +18,8 @@ function thebe_init() {
         codeMirrorConfig: {
             mode: "ocaml",
             theme: "monokai"
-        }
+        },
+        on_output_change: () => { Reveal.layout(); }
     });
 }
 
