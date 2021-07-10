@@ -10,90 +10,7 @@
 		<link rel="stylesheet" href="../reveal.js/dist/reveal.css">
 		<link rel="stylesheet" href="../reveal.js/dist/theme/white.css" id="theme">
 		<link rel="stylesheet" href="../reveal.js/plugin/highlight/monokai.css" id="highlight-theme">
-
-		<script src="../thebe/lib/index.js"></script>
-
-		<style>
-			.reveal pre {
-				width: 100%;
-			}
-			.reveal .code-wrapper code {
-				font-size: 20px;
-			}
-			.p-Widget, .lm-Widget {
-				overflow: auto;
-			}
-			.jp-OutputArea-output > pre {
-				margin: 0;
-				width: 100%;
-				box-shadow: none;
-			}
-
-			.CodeMirror pre.CodeMirror-line,
-			.CodeMirror pre.CodeMirror-line-like {
-				font-size: 20px;
-			}
-
-			.CodeMirror-hints {
-				position: absolute;
-				z-index: 10;
-				overflow: hidden;
-				list-style: none;
-
-				margin: 0;
-				padding: 2px;
-
-				-webkit-box-shadow: 2px 3px 5px rgba(0,0,0,.2);
-				-moz-box-shadow: 2px 3px 5px rgba(0,0,0,.2);
-				box-shadow: 2px 3px 5px rgba(0,0,0,.2);
-				border-radius: 3px;
-				border: 1px solid silver;
-
-				background: white;
-				font-size: 40%;
-				font-family: monospace;
-
-				max-height: 20em;
-				overflow-y: auto;
-			}
-
-			.CodeMirror-hint {
-			margin: 0;
-			padding: 0 4px;
-			border-radius: 2px;
-			white-space: pre;
-			color: black;
-			cursor: pointer;
-			}
-
-			li.CodeMirror-hint-active {
-			background: #08f;
-			color: white;
-			}
-
-			code:not(.hljs){
-				background-color: rgb(27,31,35,0.08);
-				font-size: 85%;
-				border-radius: 6px;
-				padding: .05em .1em;
-			}
-
-
-			pre.docs-tooltip {
-				background-color: black;
-				font-size: 35%;
-				overflow: auto;
-				overflow-wrap: break-word;
-				margin: 0;
-				border: white;
-				border-width: medium;
-				border-style: solid;
-				white-space: pre-wrap;
-				width: 40%;
-				z-index: 9;
-			}
-		</style>
-
+		<link rel="stylesheet" href="../ocaml-slide.css">
 	</head>
 	<body>
 		<div class="reveal">
@@ -107,47 +24,7 @@
 		<script src="../reveal.js/plugin/markdown/markdown.js"></script>
 		<script src="../reveal.js/plugin/highlight/highlight.js"></script>
 		<script src="../reveal.js/plugin/math/math.js"></script>
-		<script>
-			function thebe_init() {
-				thebelab.bootstrap({
-					bootstrap: true,
-					requestKernel: true,
-					outputSelector: '[data-output]',
-					kernelOptions: {
-						name: "ocaml-jupyter-4.12.0",
-						kernelName: "ocaml-jupyter-4.12.0",
-						path: ".",
-						serverSettings: {
-							"baseUrl": "http://localhost:16789",
-							"wsUrl": "ws://localhost:16789"
-						}
-					},
-					selector: "[data-thebe-executable]",
-					mathjaxUrl: "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js",
-					mathjaxConfig: "TeX-AMS_CHTML-full,Safe",
-					codeMirrorConfig: {
-						mode: "ocaml",
-						theme: "monokai"
-					}
-				});
-			}
-			
-		</script>
-		<script>
-			// More info about initialization & config:
-			// - https://revealjs.com/initialization/
-			// - https://revealjs.com/config/
-			Reveal.initialize({
-				hash: true,
-
-				// Learn about plugins: https://revealjs.com/plugins/
-				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes, RevealMath ],
-				keyboard: {
-					39: 'next',
-					37: 'prev'
-				}
-			}).then(() => {thebe_init();});
-		</script>
-
+		<script src="../thebe/lib/index.js"></script>
+		<script src="../ocaml-slide.js"></script>
 	</body>
 </html>
