@@ -1,77 +1,65 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
-		<title>PL - tutorials</title>
-
-		<link rel="stylesheet" href="reveal.js/dist/reset.css">
-		<link rel="stylesheet" href="reveal.js/dist/reveal.css">
-		<link rel="stylesheet" href="reveal.js/dist/theme/white.css" id="theme">
-
-		<!-- Theme used for syntax highlighted code -->
-		<link rel="stylesheet" href="reveal.js/plugin/highlight/monokai.css" id="highlight-theme">
-	</head>
-	<body>
-		<div class="reveal">
-			<div class="slides">
-				<section>
-					<style>
-						ol.alpha-list {
-							list-style-type: lower-alpha;
-						}
-					</style>
-					<h3>OCaml</h3>
-					<ol>
-						<li><ol class="alpha-list">
-							<li><a href="slides/ocaml-tut1-a.html">introduction</a></li>
-							<li><a href="slides/ocaml-tut1-b.html">functions</a></li>
-						</ol></li>
-						<li><ol class="alpha-list">
-							<li><a href="slides/ocaml-tut2-a.html">declarations</a></li>
-							<li><a href="slides/ocaml-tut2-b.html">datatypes</a></li>
-						</ol></li>
-						<li><ol class="alpha-list">
-							<li><a href="slides/ocaml-tut3-a.html">exceptions</a></li>
-							<li><a href="slides/ocaml-tut3-b.html">modules</a></li>
-							<li><a href="slides/ocaml-tut3-c.html">laziness</a></li>
-						</ol></li>
-						<li><a href="slides/ocaml-tut4.html">lists</a></li>
-						<li><a href="slides/ocaml-tut5.html">sequences</a></li>
-					</ol>
-					<div><img src="./imgs/ocaml-logo.svg" style="max-width: 20%; max-height: 20%;"></div>
-				</section>
-				<section>
-					<h3>Prolog</h3>
-					<ul>
-						<li><a href="slides/prolog-tut1.html">introduction</a></li>
-						<li><a href="slides/prolog-tut2.html">lists</a></li>
-						<li><a href="slides/prolog-tut3.html">cuts and negation</a></li>
-						<li><a href="slides/prolog-tut4.html">11</a></li>
-					</ul>
-					<div>
-						<img src="imgs/swi-prolog-logo.svg" style="max-width: 15%; max-height: 15%;">
-					</div>
-				</section>
-			</div>
-		</div>
-
-		<script src="reveal.js/dist/reveal.js"></script>
-		<script src="reveal.js/plugin/notes/notes.js"></script>
-		<script src="reveal.js/plugin/markdown/markdown.js"></script>
-		<script src="reveal.js/plugin/highlight/highlight.js"></script>
-		<script src="reveal.js/plugin/math/math.js"></script>
-		<script>
-			// More info about initialization & config:
-			// - https://revealjs.com/initialization/
-			// - https://revealjs.com/config/
-			Reveal.initialize({
-				hash: true,
-
-				// Learn about plugins: https://revealjs.com/plugins/
-				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes, RevealMath ]
-			});
-		</script>
-	</body>
+  <head>
+    <meta charset="utf-8" />
+    <title>PL - tutorials</title>
+    <style>
+      ol.alpha-list {
+        list-style-type: lower-alpha;
+      }
+      section {
+        font-size: 4vh;
+        display: inline-table;
+        margin-right: 10%;
+      }
+    </style>
+  </head>
+  <body>
+    <div style="margin-left:30%; margin-top: 15vh;">
+      <section>
+        <div>
+          <img
+            src="./imgs/ocaml-logo.svg"
+            style="max-width: 20vh;"
+          />
+        </div>
+        <ol>
+          <li>
+            <ol class="alpha-list">
+              <li><a href="slides/ocaml-tut1-a.html">introduction</a></li>
+              <li><a href="slides/ocaml-tut1-b.html">functions</a></li>
+            </ol>
+          </li>
+          <li>
+            <ol class="alpha-list">
+              <li><a href="slides/ocaml-tut2-a.html">declarations</a></li>
+              <li><a href="slides/ocaml-tut2-b.html">datatypes</a></li>
+            </ol>
+          </li>
+          <li>
+            <ol class="alpha-list">
+              <li><a href="slides/ocaml-tut3-a.html">exceptions</a></li>
+              <li><a href="slides/ocaml-tut3-b.html">modules</a></li>
+              <li><a href="slides/ocaml-tut3-c.html">laziness</a></li>
+            </ol>
+          </li>
+          <li><a href="slides/ocaml-tut4.html">lists</a></li>
+          <li><a href="slides/ocaml-tut5.html">sequences</a></li>
+        </ol>
+      </section>
+      <section>
+        <div>
+          <img
+            src="imgs/swi-prolog-logo.svg"
+            style="max-height: 7vh; position: relative; top: 1vh;"
+          /><b>Prolog</b>
+        </div>
+        <ol>
+          <li><a href="slides/prolog-tut1.html">introduction</a></li>
+          <li><a href="slides/prolog-tut2.html">lists</a></li>
+          <li><a href="slides/prolog-tut3.html">cuts</a></li>
+        </ol>
+      </section>
+    </div>
+  </body>
 </html>
