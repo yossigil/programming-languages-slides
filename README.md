@@ -47,7 +47,7 @@ go to <http://localhost:8000/>
 ## TODO
 
 - [ ] write an OCaml tutorial about:
-  - [ ] functors
+  - [X] functors
   - [X] lazy expressions
   - [ ] imperative features
   - [ ] references, mutable data structures

@@ -165,6 +165,64 @@ Module.(expr);;
 
 ---
 
-### TODO
+### functors
 
-* nesting modules
+a functor is a parameterized module
+
+```ocaml
+module Functor =
+  functor (Module: SIG) ->
+    struct
+      (*bindings*)
+    end;;
+```
+
+---vert---
+
+applying a functor
+
+```ocaml
+module FModule = Functor(Module);;
+```
+
+---vert---
+
+```ocaml
+module type ORDERED_TYPE =
+  sig
+    type t
+    val compare: t -> t -> int
+  end;;
+
+module SortedList =
+  functor (Elt: ORDERED_TYPE) ->
+    struct
+      let empty = []
+      let rec add x = function
+        | [] -> [x]
+        | hd :: tl -> match Elt.compare x hd with
+          | 0 -> hd::tl
+          | -1 -> x :: hd :: tl
+          | _ -> hd :: (add x tl)
+      (*more functions*)
+    end;;
+```
+<!-- .element: data-thebe-executable -->
+
+---vert---
+
+```ocaml
+module SortedIntList = SortedList(Int);;
+
+let open SortedIntList in
+add 5 (add 6 (add 2 (add 4 (add 3 (add 1 empty)))));;
+```
+<!-- .element: data-thebe-executable -->
+
+---vert---
+
+```ocaml
+let open SortedList(String) in
+add "abc" (add "hij" (add "efg" (add "nop" (add "klm" empty))));;
+```
+<!-- .element: data-thebe-executable -->

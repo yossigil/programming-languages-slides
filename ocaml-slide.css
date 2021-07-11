@@ -11,6 +11,7 @@
     margin: 0;
     width: 100%;
     box-shadow: none;
+    white-space: pre-wrap;
 }
 
 div.thebelab-input {
