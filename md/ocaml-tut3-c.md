@@ -59,7 +59,7 @@ note that nothing is printed
 
 ### pattern matching
 
-use `lazy _` to match against lazy expressions
+use `lazy x` to match against lazy expressions
 
 ```ocaml
 let le = lazy (1 + 1);;
@@ -70,7 +70,7 @@ let lazy n = le;;
 
 ---vert---
 
-matching against `lazy _` forces evaluation
+matching against `lazy x` forces evaluation
 
 ```ocaml
 let lazy n = le;;
