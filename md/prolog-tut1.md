@@ -4,7 +4,7 @@
 
 ---
 
-## basic constructs
+### basic constructs
 
 ---vert---
 
@@ -12,7 +12,7 @@ the basic constructs of prolog are terms and statements
 
 ---vert---
 
-### terms - atoms
+#### terms - atoms
 
 the simplest term is an **atom**, the following are atoms:
 
@@ -32,14 +32,14 @@ an **atom** is
 
 ---vert---
 
-### terms - numbers
+#### terms - numbers
 
 * integers: `123 -42`
 * real numbers: `3.14 -0.573 2.4e3`
 
 ---vert---
 
-### terms - variables
+#### terms - variables
 
 a **variable** is a string of letters, digits and an underscore starting with an upper-case letter or an underscore
 
@@ -50,7 +50,7 @@ _result
 
 ---vert---
 
-### compound terms
+#### compound terms
 
 a **compound term** comprises a functor and arguments
 
@@ -62,15 +62,16 @@ a functor `f` of arity `n` is denoted `f/n`
 
 ---vert---
 
-### terminology
+#### terminology
 
 * a term is **ground** (קונקרטי) if it contains no variables
 * a **goal** is an atom or a compound term
-* a **predicate** is an atom used to name a fact or a rule (later)
+* a **predicate** (פרדיקט) is a functor for which a list of clauses is defined
+* a **clause** (פסוקית) is a fact or a rule
 
 ---vert---
 
-### facts
+#### facts
 
 a **fact** (עובדה) is a kind of statement
 
@@ -101,7 +102,7 @@ fish(salmon).
 eats(bear, honey).
 eats(bear, salmon).
 eats(rat, salmon).
-eats(worm, salmon).
+eats(salmon, warm).
 ```
 
 ---vert---
@@ -112,11 +113,13 @@ facts can contain variables
 likes(X, course_236319).
 ```
 
-(variables are universally quantified)
+variables are universally quantified
+
+`$$\forall X,likes(X, course\_236319)$$`
 
 ---vert---
 
-### queries
+#### queries
 
 a **query** (שאילתה) is a conjunction of goals
 
@@ -125,11 +128,13 @@ eats(X, salmon), eats(X, honey).
 % X = bear.
 ```
 
-(variables are existentially quantified)
+variables are existentially quantified
+
+`$$\exists X,eats(X, salmon) \land eats(X, honey)$$`
 
 ---vert---
 
-### rules
+#### rules
 
 a **rule** (חוק, כלל) is a statement which enables us to define new relationships in terms of existing ones
 
@@ -148,6 +153,82 @@ predicate(term1, ..., termN) :- goal1, ..., goalN.
 survival_dependency(X, Y) :- eats(X, Y).
 survival_dependency(X, Y) :-
     eats(X, Z), survival_dependency(Z, Y).
+```
+
+---
+
+### writing Prolog programs
+
+* create a file named `prog.pl`
+* write clauses in `prog.pl`
+* enter the prolog interpreter
+* type `consult(prog.pl)`
+* query the interpreter
+
+---vert---
+
+#### dynamic clauses
+
+you can add clauses dynamically
+
+```prolog
+assertz(eats(bear, tuna)).
+assertz((
+  mother(Child, Mother) :-
+    parent(Child, Mother),
+    female(Mother)
+)).
+```
+
+`asserta` asserts the clause as first clause of the predicate while `assertz` asserts it as last clause
+
+---vert---
+
+dynamically remove a clause using `retract/1`
+
+```prolog
+assertz(q(a)).
+assertz((p(X) :- q(X))).
+assertz(p(b)).
+p(a).
+% true.
+
+retract(p(X) :- q(a)).
+p(a).
+% false.
+```
+
+---vert---
+
+dynamically remove clauses using `retractall/1`
+
+```prolog
+assertz(q(a)).
+assertz((p(X) :- q(X))).
+assertz(p(b)).
+p(a), p(b).
+% true.
+
+retractall(p(_)).
+p(a).
+% false.
+p(b).
+% false.
+```
+
+---vert---
+
+dynamically remove a predicate using `abolish/1`
+
+```prolog
+assertz(p(a)).
+assertz(p(b)).
+p(a), p(b).
+% true
+
+abolish(p/1).
+p(X).
+% ERROR: Unknown procedure: p/1 (DWIM could not correct goal)
 ```
 
 ---
@@ -195,7 +276,7 @@ course(X) = semester(Y).
 
 ---vert---
 
-### matching rules
+#### matching rules
 
 terms `S` and `T` match if:
 
@@ -209,7 +290,7 @@ terms `S` and `T` match if:
 
 ---vert---
 
-### geometric example
+#### geometric example
 
 use compound terms to represent geometric shapes
 
@@ -234,7 +315,7 @@ Z = 3.
 
 ---vert---
 
-### matching as means of computation
+#### matching as means of computation
 
 facts:
 
@@ -275,7 +356,7 @@ X is 1 + 2.
 
 ---vert---
 
-### comparison operators
+#### comparison operators
 
 ```prolog
 X > Y
@@ -300,7 +381,7 @@ the comparison operators also force evaluation
 
 ---vert---
 
-### `=` VS. `=:=`
+#### `=` VS. `=:=`
 
 * `=` is used for matching and may instantiate variables
 * `=:=` causes an arithmetic evaluation of its operands and cannot instantiate variables
@@ -315,7 +396,7 @@ the comparison operators also force evaluation
 
 ---vert---
 
-### GCD
+#### GCD
 
 ```prolog
 gcd(X, X, X).
@@ -327,3 +408,103 @@ gcd(X, Y, D) :-
     Y < X,
     gcd(Y, X, D).
 ```
+
+---
+
+### builtin control predicates
+
+---vert---
+
+#### conjunction
+
+the `,/2` predicate: the goal `(G1, G2)` succeeds if the goal `G1` and the goal `G2` succeed
+
+```prolog
+TODO: example
+```
+
+---vert---
+
+#### disjunction
+
+the `;/2` predicate: the goal `(G1 ; G2)` succeeds if `G1` or `G2` succeed. defined as follows:
+
+```prolog
+(G1 ; G2) :- G1.
+(G1 ; G2) :- G2.
+```
+
+```prolog
+TODO: example
+```
+
+---vert---
+
+#### true
+
+the predicate `true/0` always succeeds
+
+---vert---
+
+#### false
+
+the predicates `false/0` and `fail/0` always fail
+
+---vert---
+
+#### negation as failure
+
+* the negation predicate is `\+/1`
+* for known predicates, prolog works under a closed world assumption - if something can't be proved then it is false
+* it is not logical negation!
+
+---vert---
+
+```prolog
+assertz(person(jimmy)).
+assertz(person(cindy)).
+
+person(rick).
+% false.
+
+\+ person(rick).
+% true.
+```
+
+---vert---
+
+it might not work like you'd expect
+
+```prolog
+person(X).
+% X = jimmy ; X = cindy.
+
+\+ person(X).
+% false.
+```
+
+why doesn't prolog answer with `X = rick` or simply with `true`?
+
+---vert---
+
+`person(X)` succeeds (we saw that earlier) so its negation fails
+
+if `G` fails `\+ G` succeeds otherwise it fails
+
+---vert---
+
+`\+/1` allows for non-monotonic reasoning - a fact can become false by adding clauses to the database
+
+```prolog
+assertz(illegal(murder)).
+assertz((legal(X) :- \+ illegal(X))).
+
+legal(theft).
+% true.
+
+assertz(illegal(theft)).
+legal(theft).
+% false.
+```
+
+
