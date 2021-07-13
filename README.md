@@ -9,6 +9,27 @@
 - ocaml-merlin <https://github.com/ocaml/merlin>
 - ocaml-jupyter <https://github.com/akabe/ocaml-jupyter>
 
+### install dependencies
+
+```bash
+sudo apt install nodejs npm opam jupyter-notebook zlib1g-dev libgmp-dev libzmq5-dev git
+```
+
+### ocaml + ocaml packages
+
+```bash
+opam switch create 4.12.0 ocaml-variants.4.12.0+options
+eval $(opam env)
+opam install merlin jupyter ocaml-lsp-server 
+```
+
+### setup ocaml-jupyter
+
+```bash
+ocaml-jupyter-opam-genspec
+jupyter kernelspec install [ --user ] --name ocaml-jupyter "$(opam var share)/jupyter"
+```
+
 ## install
 
 ```bash
