@@ -1,7 +1,16 @@
 # OCaml
 
 ## lazy expressions
-
+Just like functions, but more cumbersome syntax. These "functions" can be evaluated only once...
+````java
+int x = 3;
+Integer f = lazy(()->x*x);
+static <T>  T lazy(Supplier<T> x) {
+    T value = null;
+    if (value == null)
+       value = x.get();
+     return value;
+ }
 ---
 
 ### basic usage
